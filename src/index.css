@@ -1,0 +1,92 @@
+:root {
+  font-family: system-ui, -apple-system, sans-serif;
+  color: #1a1a1a;
+  background: #f7f7f8;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+.container {
+  max-width: 560px;
+  margin: 48px auto;
+  padding: 0 20px;
+}
+
+h1 {
+  margin-bottom: 4px;
+}
+
+.subtitle {
+  color: #888;
+  margin-top: 0;
+}
+
+.row {
+  display: flex;
+  gap: 8px;
+  margin: 24px 0;
+}
+
+input {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 15px;
+}
+
+button {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  background: #3ecf8e;
+  color: #05170e;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #34b87d;
+}
+
+.notes {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.notes li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+.delete {
+  background: transparent;
+  color: #c00;
+  padding: 4px 8px;
+  font-size: 14px;
+}
+
+.delete:hover {
+  background: #fdecec;
+}
+
+.error {
+  color: #c00;
+}
+
+.empty {
+  color: #999;
+}
