@@ -46,10 +46,14 @@ export default function PhoneFrame({
             <span className="phone-tab-icon">⌂</span>
             <span>Home</span>
           </div>
-          <div className="phone-tab">
-            <span className="phone-tab-icon">▤</span>
-            <span>Files</span>
-          </div>
+          <button
+            className="phone-tab phone-tab-button"
+            type="button"
+            onClick={() => navigate('/chat')}
+          >
+            <span className="phone-tab-icon">💬</span>
+            <span>Chat</span>
+          </button>
           <div className="phone-tab">
             <span className="phone-tab-icon">◐</span>
             <span>Profile</span>

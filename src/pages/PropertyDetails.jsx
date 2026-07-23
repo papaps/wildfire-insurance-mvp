@@ -7,7 +7,7 @@ import { supabase } from '../supabase'
 
 export default function PropertyDetails() {
   const navigate = useNavigate()
-  const { propertyDetails, setPropertyDetails } = useFlow()
+  const { propertyDetails, setPropertyDetails, addProperty } = useFlow()
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
 
@@ -39,6 +39,7 @@ export default function PropertyDetails() {
       return
     }
 
+    addProperty()
     navigate('/documents')
   }
 

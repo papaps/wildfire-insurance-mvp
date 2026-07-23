@@ -6,7 +6,7 @@ export default function ItemsGenerating() {
   const navigate = useNavigate()
 
   useEffect(() => {
-    const timer = setTimeout(() => navigate('/chat'), 2000)
+    const timer = setTimeout(() => navigate('/checklist'), 2000)
     return () => clearTimeout(timer)
   }, [navigate])
 

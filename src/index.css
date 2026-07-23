@@ -33,7 +33,7 @@ h1 {
   margin: 24px 0;
 }
 
-input {
+input:not([type='radio']):not([type='checkbox']) {
   flex: 1;
   padding: 10px 12px;
   border: 1px solid #ccc;

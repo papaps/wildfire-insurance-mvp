@@ -91,6 +91,18 @@
   color: #111;
 }
 
+.phone-tab-button {
+  border: none;
+  background: none;
+  padding: 0;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.phone-tab-button:hover {
+  background: none;
+}
+
 .phone-tab-icon {
   font-size: 18px;
 }
@@ -246,6 +258,8 @@
 }
 
 .upload-box {
+  background: none;
+  width: 100%;
   border: 1.5px dashed #ccc;
   border-radius: 10px;
   padding: 20px;

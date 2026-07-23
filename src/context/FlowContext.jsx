@@ -45,6 +45,31 @@ const initialPhotos = Object.fromEntries(
   PHOTO_CATEGORIES.map((c) => [c.id, { count: 0 }])
 )
 
+// Wildfire mitigation checklist shown in the post-report "hazard report" flow.
+export const HAZARD_RISK_SCORE = 8.6
+
+export const CHECKLIST_ITEMS = [
+  { id: 'gutters', label: 'Clear leaves and debris from gutters', cost: '$0 · DIY' },
+  { id: 'firewood', label: 'Move firewood 10 m from the house', cost: '$0 · DIY' },
+  { id: 'branches', label: 'Trim branches over the roof', cost: '~$150–300' },
+  { id: 'mulch', label: 'Replace wood mulch with gravel', cost: '~$400' },
+  { id: 'roof', label: 'Upgrade to a Class A fire-rated roof', cost: '$8,000+ · rebate may apply' },
+]
+
+const initialChecklistProgress = {
+  gutters: { done: true, photo: null, receipt: null },
+  firewood: { done: true, photo: null, receipt: null },
+  branches: { done: true, photo: null, receipt: null },
+  mulch: { done: false, photo: null, receipt: null },
+  roof: { done: false, photo: null, receipt: null },
+}
+
+export const INSURERS = [
+  { id: 'pacific-coast', label: 'Pacific Coast Insurance', firesmartNote: 'Accepts FireSmart certificates · mitigation discount' },
+  { id: 'bc-mutual', label: 'BC Mutual Home', firesmartNote: 'Accepts mitigation reports at quote time' },
+  { id: 'interior-shield', label: 'Interior Shield Insurance', firesmartNote: 'Covers high-risk postal codes with verified fixes' },
+]
+
 // Mock AI-detected items shown in the review screens.
 const initialIdentifiedItems = {
   exterior: [
@@ -83,6 +108,11 @@ export function FlowProvider({ children }) {
     { id: 1, from: 'assistant', text: 'Hello! What can I help you with today?' },
   ])
 
+  const [checklistProgress, setChecklistProgress] = useState(initialChecklistProgress)
+  const [reportInclusions, setReportInclusions] = useState({ photos: true, receipts: true })
+  const [insurer, setInsurerState] = useState({ insurerId: 'pacific-coast', policyNumber: 'HO-4482-1937' })
+  const [properties, setProperties] = useState([])
+
   function updateDocument(id, patch) {
     setDocuments((prev) => ({ ...prev, [id]: { ...prev[id], ...patch } }))
   }
@@ -107,6 +137,31 @@ export function FlowProvider({ children }) {
     setChatMessages((prev) => [...prev, { id: prev.length + 1, from, text }])
   }
 
+  function updateChecklistItem(itemId, patch) {
+    setChecklistProgress((prev) => ({ ...prev, [itemId]: { ...prev[itemId], ...patch } }))
+  }
+
+  function toggleReportInclusion(key) {
+    setReportInclusions((prev) => ({ ...prev, [key]: !prev[key] }))
+  }
+
+  function setInsurer(patch) {
+    setInsurerState((prev) => ({ ...prev, ...patch }))
+  }
+
+  function addProperty() {
+    const now = new Date()
+    const pad = (n) => String(n).padStart(2, '0')
+    const filename = `Wildfire Home Inspection ${pad(now.getMonth() + 1)}-${pad(
+      now.getDate()
+    )}-${now.getFullYear()} ${pad(now.getHours())}:${pad(now.getMinutes())}.pdf`
+    setProperties((prev) => [...prev, { id: `prop-${now.getTime()}`, filename }])
+  }
+
+  function removeProperty(id) {
+    setProperties((prev) => prev.filter((p) => p.id !== id))
+  }
+
   const value = {
     propertyDetails,
     setPropertyDetails,
@@ -118,6 +173,15 @@ export function FlowProvider({ children }) {
     renameIdentifiedItem,
     chatMessages,
     addChatMessage,
+    checklistProgress,
+    updateChecklistItem,
+    reportInclusions,
+    toggleReportInclusion,
+    insurer,
+    setInsurer,
+    properties,
+    addProperty,
+    removeProperty,
   }
 
   return <FlowContext.Provider value={value}>{children}</FlowContext.Provider>
