@@ -1,14 +1,45 @@
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import PhoneFrame from '../components/PhoneFrame'
 import FooterNav from '../components/FooterNav'
 import { useFlow } from '../context/FlowContext'
+import { supabase } from '../supabase'
 
 export default function PropertyDetails() {
   const navigate = useNavigate()
   const { propertyDetails, setPropertyDetails } = useFlow()
+  const [submitting, setSubmitting] = useState(false)
+  const [error, setError] = useState('')
 
   function update(field, value) {
     setPropertyDetails((prev) => ({ ...prev, [field]: value }))
+  }
+
+  async function handleNext() {
+    setError('')
+    setSubmitting(true)
+
+    const { error: submitError } = await supabase.from('submissions').insert({
+      street_address: propertyDetails.streetAddress,
+      city: propertyDetails.city,
+      province: propertyDetails.province,
+      postal_code: propertyDetails.postalCode,
+      property_type: propertyDetails.propertyType,
+      year_built: propertyDetails.yearBuilt ? Number(propertyDetails.yearBuilt) : null,
+      n_stories: propertyDetails.nStories ? Number(propertyDetails.nStories) : null,
+      construction_type: propertyDetails.constructionType,
+      roof_type: propertyDetails.roofType,
+      currently_lived_in: propertyDetails.livesHere === 'yes',
+    })
+
+    setSubmitting(false)
+
+    if (submitError) {
+      setError(submitError.message)
+      return
+    }
+
+    navigate('/documents')
   }
 
   return (
@@ -79,11 +110,12 @@ export default function PropertyDetails() {
 
       <div className="field-row">
         <div className="field">
-          <label>Square Footage</label>
+          <label>Number of Stories</label>
           <input
             type="text"
-            value={propertyDetails.squareFootage}
-            onChange={(e) => update('squareFootage', e.target.value)}
+            inputMode="numeric"
+            value={propertyDetails.nStories}
+            onChange={(e) => update('nStories', e.target.value)}
           />
         </div>
         <div className="field">
@@ -139,7 +171,14 @@ export default function PropertyDetails() {
         </div>
       </div>
 
-      <FooterNav hideBack nextLabel="Next" onNext={() => navigate('/documents')} />
+      {error && <p className="field-error">{error}</p>}
+
+      <FooterNav
+        hideBack
+        nextLabel={submitting ? 'Saving...' : 'Next'}
+        nextDisabled={submitting}
+        onNext={handleNext}
+      />
     </PhoneFrame>
   )
 }

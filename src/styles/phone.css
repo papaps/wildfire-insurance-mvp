@@ -126,6 +126,12 @@
   flex: 1;
 }
 
+.field-error {
+  color: #c0392b;
+  font-size: 13px;
+  margin: -6px 0 14px;
+}
+
 .radio-row {
   display: flex;
   gap: 20px;

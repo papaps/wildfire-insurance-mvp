@@ -70,7 +70,7 @@ export function FlowProvider({ children }) {
     postalCode: '',
     propertyType: '',
     yearBuilt: '',
-    squareFootage: '',
+    nStories: '',
     constructionType: '',
     roofType: '',
     livesHere: 'yes',
