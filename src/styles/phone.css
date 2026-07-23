@@ -333,6 +333,44 @@
   transition: width 0.3s ease;
 }
 
+/* --- Auth screens --- */
+
+.auth-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.auth-row .radio-option {
+  font-size: 13px;
+  color: #555;
+}
+
+.auth-disabled-link {
+  cursor: default;
+  color: #3366cc;
+}
+
+.auth-submit {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.auth-divider {
+  text-align: center;
+  color: #999;
+  font-size: 12px;
+  margin: 10px 0 14px;
+}
+
+.auth-switch {
+  text-align: center;
+  font-size: 13px;
+  color: #555;
+  margin-top: 18px;
+}
+
 /* --- Chat screen --- */
 
 .chat-messages {
