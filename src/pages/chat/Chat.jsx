@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import PhoneFrame from '../../components/PhoneFrame'
 import { useFlow } from '../../context/FlowContext'
@@ -7,6 +7,12 @@ export default function Chat() {
   const navigate = useNavigate()
   const { chatMessages, addChatMessage } = useFlow()
   const [draft, setDraft] = useState('')
+  const bottomRef = useRef(null)
+
+  // Keep the latest message in view as the conversation grows.
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
+  }, [chatMessages])
 
   function handleSend() {
     const text = draft.trim()
@@ -34,6 +40,7 @@ export default function Chat() {
             {msg.text}
           </div>
         ))}
+        <div ref={bottomRef} />
       </div>
 
       <div className="chat-input-row">
