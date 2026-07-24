@@ -599,6 +599,13 @@ button.list-row:hover {
   color: var(--white);
 }
 
+.chevron-icon {
+  flex-shrink: 0;
+  font-size: 22px;
+  line-height: 1;
+  color: var(--teal-muted-light);
+}
+
 .upload-box {
   background: none;
   width: 100%;

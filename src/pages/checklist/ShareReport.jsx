@@ -17,7 +17,7 @@ export default function ShareReport() {
           <span className="list-row-label">Yes, I have an insurer</span>
           <span className="list-row-sub">Send your report for your next renewal or reassessment</span>
         </div>
-        <span className="status-icon">›</span>
+        <span className="chevron-icon">›</span>
       </button>
 
       <button
@@ -29,7 +29,7 @@ export default function ShareReport() {
           <span className="list-row-label">No, or shopping around</span>
           <span className="list-row-sub">See insurers that recognize FireSmart work</span>
         </div>
-        <span className="status-icon">›</span>
+        <span className="chevron-icon">›</span>
       </button>
     </PhoneFrame>
   )

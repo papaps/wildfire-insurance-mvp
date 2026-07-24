@@ -93,9 +93,12 @@ export default function DocumentsList() {
                 )}
 
                 {docState.hasIt === false && doc.helpText && (
-                  <a className="help-link" href="#">
+                  <span
+                    className="help-link help-link-disabled"
+                    title="Not available yet"
+                  >
                     {doc.helpText}
-                  </a>
+                  </span>
                 )}
               </div>
             )}
