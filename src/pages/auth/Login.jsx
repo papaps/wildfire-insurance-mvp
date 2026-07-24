@@ -67,7 +67,12 @@ export default function Login() {
               />
               Remember me
             </label>
-            <span className="help-link auth-disabled-link">Forgot Password?</span>
+            <span
+              className="help-link help-link-disabled"
+              title="Not available in this demo"
+            >
+              Forgot Password?
+            </span>
           </div>
 
           {error && <p className="field-error">{error}</p>}

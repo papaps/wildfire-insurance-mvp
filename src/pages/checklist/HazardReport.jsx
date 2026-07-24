@@ -40,10 +40,10 @@ export default function HazardReport() {
         )
       })}
 
-      <div className="help-link" onClick={() => {}}>
+      <div className="help-link help-link-disabled" title="Not available yet">
         FireSmart BC — book a free home assessment ↗
       </div>
-      <div className="help-link" onClick={() => {}}>
+      <div className="help-link help-link-disabled" title="Not available yet">
         Check FireSmart rebate eligibility ↗
       </div>
 

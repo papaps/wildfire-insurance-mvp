@@ -651,6 +651,12 @@ button.list-row:hover {
   display: inline-block;
 }
 
+.help-link-disabled {
+  color: var(--teal-muted-light);
+  cursor: default;
+  text-decoration: none;
+}
+
 .center-screen {
   flex: 1;
   display: flex;
@@ -717,10 +723,6 @@ button.list-row:hover {
   color: var(--teal-muted);
 }
 
-.auth-disabled-link {
-  cursor: default;
-  color: var(--coral);
-}
 
 .auth-submit {
   width: 100%;
