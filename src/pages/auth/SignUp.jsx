@@ -57,8 +57,8 @@ export default function SignUp() {
 
   return (
     <PhoneFrame showBack={false}>
+      <div className="auth-center">
       <div className="section-title">Create your account</div>
-      <p className="section-subtitle">Enter your details to get started</p>
 
       <form onSubmit={handleSubmit}>
         <div className="field-row">
@@ -137,6 +137,7 @@ export default function SignUp() {
           Log In
         </span>
       </p>
+      </div>
     </PhoneFrame>
   )
 }

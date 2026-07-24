@@ -34,7 +34,6 @@ export default function Login() {
     <PhoneFrame showBack={false}>
       <div className="auth-center">
         <div className="section-title">Sign in</div>
-        <p className="section-subtitle">Enter your email and password to log in</p>
 
         <form onSubmit={handleSubmit}>
           <div className="field">
