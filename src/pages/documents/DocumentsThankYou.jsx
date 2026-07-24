@@ -6,12 +6,12 @@ export default function DocumentsThankYou() {
   const navigate = useNavigate()
 
   return (
-    <PhoneFrame title="" onBack={() => navigate('/documents')}>
+    <PhoneFrame onBack={() => navigate('/documents')}>
       <div className="center-screen">
         <div className="big-icon">{'✓'}</div>
-        <div className="section-title">Thank you!</div>
+        <div className="section-title">Thanks!</div>
         <p className="section-subtitle">
-          We've received your information. Now we'd like to take photos of your property to
+          We've received your information. Now, upload or take photos of your property to
           continue your wildfire risk assessment.
         </p>
       </div>
@@ -19,6 +19,7 @@ export default function DocumentsThankYou() {
         onBack={() => navigate('/documents')}
         nextLabel="Next"
         onNext={() => navigate('/photos')}
+        progress={1}
       />
     </PhoneFrame>
   )

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import PhoneFrame from '../../components/PhoneFrame'
+import { GoogleIcon, FacebookIcon } from '../../components/AuthIcons'
 import { useAuth } from '../../context/AuthContext'
 
 export default function SignUp() {
@@ -111,10 +112,22 @@ export default function SignUp() {
 
       <div className="auth-divider">Or</div>
 
-      <button className="btn btn-secondary auth-submit" type="button" disabled title="Not available in this demo">
+      <button
+        className="btn btn-secondary auth-submit auth-sso-btn"
+        type="button"
+        disabled
+        title="Not available in this demo"
+      >
+        <GoogleIcon />
         Continue with Google
       </button>
-      <button className="btn btn-secondary auth-submit" type="button" disabled title="Not available in this demo">
+      <button
+        className="btn btn-secondary auth-submit auth-sso-btn"
+        type="button"
+        disabled
+        title="Not available in this demo"
+      >
+        <FacebookIcon />
         Continue with Facebook
       </button>
 

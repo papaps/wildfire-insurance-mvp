@@ -1,4 +1,6 @@
-import { createContext, useContext, useState } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
+import { supabase } from '../supabase'
+import { useAuth } from './AuthContext'
 
 // Shared mock state for the whole property-onboarding flow.
 // Every screen group (documents, photos, items, chat) reads/writes here so
@@ -87,7 +89,13 @@ const initialIdentifiedItems = {
   renovation: [],
 }
 
+function submissionToProperty(row) {
+  const address = [row.street_address, row.city].filter(Boolean).join(', ')
+  return { id: row.id, address: address || 'Untitled property' }
+}
+
 export function FlowProvider({ children }) {
+  const { user } = useAuth()
   const [propertyDetails, setPropertyDetails] = useState({
     streetAddress: '',
     city: '',
@@ -112,6 +120,28 @@ export function FlowProvider({ children }) {
   const [reportInclusions, setReportInclusions] = useState({ photos: true, receipts: true })
   const [insurer, setInsurerState] = useState({ insurerId: 'pacific-coast', policyNumber: 'HO-4482-1937' })
   const [properties, setProperties] = useState([])
+
+  useEffect(() => {
+    if (!user) {
+      setProperties([])
+      return
+    }
+
+    let cancelled = false
+
+    supabase
+      .from('submissions')
+      .select('id, street_address, city, created_at')
+      .order('created_at', { ascending: false })
+      .then(({ data, error }) => {
+        if (cancelled || error || !data) return
+        setProperties(data.map(submissionToProperty))
+      })
+
+    return () => {
+      cancelled = true
+    }
+  }, [user])
 
   function updateDocument(id, patch) {
     setDocuments((prev) => ({ ...prev, [id]: { ...prev[id], ...patch } }))
@@ -149,13 +179,8 @@ export function FlowProvider({ children }) {
     setInsurerState((prev) => ({ ...prev, ...patch }))
   }
 
-  function addProperty() {
-    const now = new Date()
-    const pad = (n) => String(n).padStart(2, '0')
-    const filename = `Wildfire Home Inspection ${pad(now.getMonth() + 1)}-${pad(
-      now.getDate()
-    )}-${now.getFullYear()} ${pad(now.getHours())}:${pad(now.getMinutes())}.pdf`
-    setProperties((prev) => [...prev, { id: `prop-${now.getTime()}`, filename }])
+  function addProperty(row) {
+    setProperties((prev) => [submissionToProperty(row), ...prev])
   }
 
   function removeProperty(id) {

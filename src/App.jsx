@@ -8,11 +8,9 @@ import Home from './pages/Home'
 import PropertyDetails from './pages/PropertyDetails'
 
 import DocumentsList from './pages/documents/DocumentsList'
-import DocumentDetail from './pages/documents/DocumentDetail'
 import DocumentsThankYou from './pages/documents/DocumentsThankYou'
 
 import PhotosList from './pages/photos/PhotosList'
-import PhotoCategoryDetail from './pages/photos/PhotoCategoryDetail'
 import PhotoCamera from './pages/photos/PhotoCamera'
 import PhotoPreview from './pages/photos/PhotoPreview'
 import PhotosValidating from './pages/photos/PhotosValidating'
@@ -60,11 +58,10 @@ function AppRoutes() {
 
       <Route path="/documents" element={<RequireAuth><DocumentsList /></RequireAuth>} />
       <Route path="/documents/thank-you" element={<RequireAuth><DocumentsThankYou /></RequireAuth>} />
-      <Route path="/documents/:docId" element={<RequireAuth><DocumentDetail /></RequireAuth>} />
 
       <Route path="/photos" element={<RequireAuth><PhotosList /></RequireAuth>} />
       <Route path="/photos/validating" element={<RequireAuth><PhotosValidating /></RequireAuth>} />
-      <Route path="/photos/:categoryId" element={<RequireAuth><PhotoCategoryDetail /></RequireAuth>} />
+      <Route path="/photos/:categoryId" element={<RequireAuth><PhotosList /></RequireAuth>} />
       <Route path="/photos/:categoryId/camera" element={<RequireAuth><PhotoCamera /></RequireAuth>} />
       <Route path="/photos/:categoryId/preview" element={<RequireAuth><PhotoPreview /></RequireAuth>} />
 

@@ -38,7 +38,9 @@ export default function PhoneFrame({
         </div>
       )}
 
-      <div className="phone-content">{children}</div>
+      <div className={tabBar ? 'phone-content phone-content-tabbar-pad' : 'phone-content'}>
+        {children}
+      </div>
 
       {tabBar ? (
         <div className="phone-tabbar">

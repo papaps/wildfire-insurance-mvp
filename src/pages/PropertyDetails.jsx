@@ -5,6 +5,18 @@ import FooterNav from '../components/FooterNav'
 import { useFlow } from '../context/FlowContext'
 import { supabase } from '../supabase'
 
+const REQUIRED_FIELDS = [
+  'streetAddress',
+  'city',
+  'province',
+  'postalCode',
+  'propertyType',
+  'yearBuilt',
+  'nStories',
+  'constructionType',
+  'roofType',
+]
+
 export default function PropertyDetails() {
   const navigate = useNavigate()
   const { propertyDetails, setPropertyDetails, addProperty } = useFlow()
@@ -15,22 +27,30 @@ export default function PropertyDetails() {
     setPropertyDetails((prev) => ({ ...prev, [field]: value }))
   }
 
+  const formComplete = REQUIRED_FIELDS.every((field) => String(propertyDetails[field]).trim())
+
   async function handleNext() {
+    if (!formComplete) return
+
     setError('')
     setSubmitting(true)
 
-    const { error: submitError } = await supabase.from('submissions').insert({
-      street_address: propertyDetails.streetAddress,
-      city: propertyDetails.city,
-      province: propertyDetails.province,
-      postal_code: propertyDetails.postalCode,
-      property_type: propertyDetails.propertyType,
-      year_built: propertyDetails.yearBuilt ? Number(propertyDetails.yearBuilt) : null,
-      n_stories: propertyDetails.nStories ? Number(propertyDetails.nStories) : null,
-      construction_type: propertyDetails.constructionType,
-      roof_type: propertyDetails.roofType,
-      currently_lived_in: propertyDetails.livesHere === 'yes',
-    })
+    const { data, error: submitError } = await supabase
+      .from('submissions')
+      .insert({
+        street_address: propertyDetails.streetAddress,
+        city: propertyDetails.city,
+        province: propertyDetails.province,
+        postal_code: propertyDetails.postalCode,
+        property_type: propertyDetails.propertyType,
+        year_built: propertyDetails.yearBuilt ? Number(propertyDetails.yearBuilt) : null,
+        n_stories: propertyDetails.nStories ? Number(propertyDetails.nStories) : null,
+        construction_type: propertyDetails.constructionType,
+        roof_type: propertyDetails.roofType,
+        currently_lived_in: propertyDetails.livesHere === 'yes',
+      })
+      .select('id, street_address, city, created_at')
+      .single()
 
     setSubmitting(false)
 
@@ -39,19 +59,16 @@ export default function PropertyDetails() {
       return
     }
 
-    addProperty()
+    addProperty(data)
     navigate('/documents')
   }
 
   return (
-    <PhoneFrame title="Property Details" onBack={() => navigate('/')}>
-      <div className="section-title">Tell us about your property</div>
-      <p className="section-subtitle">
-        This helps us assess the wildfire risk for your home.
-      </p>
+    <PhoneFrame step="Step 1 of 2" onBack={() => navigate('/')}>
+      <div className="section-title">Property Details</div>
 
       <div className="field">
-        <label>Street Address</label>
+        <label>Home Address</label>
         <input
           type="text"
           value={propertyDetails.streetAddress}
@@ -100,16 +117,15 @@ export default function PropertyDetails() {
         </select>
       </div>
 
-      <div className="field">
-        <label>Year Built</label>
-        <input
-          type="text"
-          value={propertyDetails.yearBuilt}
-          onChange={(e) => update('yearBuilt', e.target.value)}
-        />
-      </div>
-
       <div className="field-row">
+        <div className="field">
+          <label>Year Built</label>
+          <input
+            type="text"
+            value={propertyDetails.yearBuilt}
+            onChange={(e) => update('yearBuilt', e.target.value)}
+          />
+        </div>
         <div className="field">
           <label>Number of Stories</label>
           <input
@@ -119,19 +135,20 @@ export default function PropertyDetails() {
             onChange={(e) => update('nStories', e.target.value)}
           />
         </div>
-        <div className="field">
-          <label>Construction Type</label>
-          <select
-            value={propertyDetails.constructionType}
-            onChange={(e) => update('constructionType', e.target.value)}
-          >
-            <option value="">Select</option>
-            <option value="wood-frame">Wood Frame</option>
-            <option value="brick">Brick</option>
-            <option value="concrete">Concrete</option>
-            <option value="other">Other</option>
-          </select>
-        </div>
+      </div>
+
+      <div className="field">
+        <label>Construction Type</label>
+        <select
+          value={propertyDetails.constructionType}
+          onChange={(e) => update('constructionType', e.target.value)}
+        >
+          <option value="">Select</option>
+          <option value="wood-frame">Wood Frame</option>
+          <option value="brick">Brick</option>
+          <option value="concrete">Concrete</option>
+          <option value="other">Other</option>
+        </select>
       </div>
 
       <div className="field">
@@ -175,10 +192,11 @@ export default function PropertyDetails() {
       {error && <p className="field-error">{error}</p>}
 
       <FooterNav
-        hideBack
+        onBack={() => navigate('/')}
         nextLabel={submitting ? 'Saving...' : 'Next'}
-        nextDisabled={submitting}
+        nextDisabled={submitting || !formComplete}
         onNext={handleNext}
+        progress={0.5}
       />
     </PhoneFrame>
   )
