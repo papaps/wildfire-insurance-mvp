@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import PhoneFrame from '../components/PhoneFrame'
-import { CirclePlusIcon, EditIcon, LogOutIcon, MenuIcon, MoreIcon, TrashIcon } from '../components/Icons'
+import { CirclePlusIcon, LogOutIcon, MenuIcon, MoreIcon, TrashIcon } from '../components/Icons'
 import { useAuth } from '../context/AuthContext'
 import { useFlow } from '../context/FlowContext'
 
@@ -82,10 +82,6 @@ export default function Home() {
                   <>
                     <div className="menu-backdrop" onClick={() => setOpenPropertyMenuId(null)} />
                     <div className="menu-popover" onClick={(e) => e.stopPropagation()}>
-                      <button type="button" className="menu-item" disabled title="Not available yet">
-                        <EditIcon />
-                        Edit
-                      </button>
                       <button
                         type="button"
                         className="menu-item menu-item-danger"

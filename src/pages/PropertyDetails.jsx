@@ -204,7 +204,6 @@ export default function PropertyDetails() {
         nextLabel={submitting ? 'Saving...' : 'Next'}
         nextDisabled={submitting || !formComplete}
         onNext={handleNext}
-        progress={0.5}
       />
     </PhoneFrame>
   )

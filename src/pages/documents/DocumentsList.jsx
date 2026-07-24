@@ -110,7 +110,6 @@ export default function DocumentsList() {
         onBack={() => navigate('/property-details')}
         onNext={() => navigate('/documents/thank-you')}
         nextDisabled={!allComplete}
-        progress={0.5 + (completeCount / DOCUMENT_TYPES.length) * 0.5}
       />
     </PhoneFrame>
   )
