@@ -183,8 +183,15 @@ export function FlowProvider({ children }) {
     setProperties((prev) => [submissionToProperty(row), ...prev])
   }
 
-  function removeProperty(id) {
+  async function removeProperty(id) {
+    const previous = properties
     setProperties((prev) => prev.filter((p) => p.id !== id))
+
+    const { error } = await supabase.from('submissions').delete().eq('id', id)
+    if (error) {
+      setProperties(previous)
+      throw error
+    }
   }
 
   const value = {

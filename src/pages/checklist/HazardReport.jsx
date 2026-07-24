@@ -1,31 +1,53 @@
 import { useNavigate } from 'react-router-dom'
 import PhoneFrame from '../../components/PhoneFrame'
-import { CHECKLIST_ITEMS, HAZARD_RISK_SCORE } from '../../context/FlowContext'
+import { useFlow, CHECKLIST_ITEMS, HAZARD_RISK_SCORE } from '../../context/FlowContext'
+
+function riskEmoji(score) {
+  if (score < 3) return '😄'
+  if (score < 5) return '🙂'
+  if (score < 7) return '😐'
+  if (score < 9) return '😟'
+  return '😱'
+}
 
 export default function HazardReport() {
   const navigate = useNavigate()
+  const { checklistProgress } = useFlow()
 
   return (
     <PhoneFrame title="Your hazard report" onBack={() => navigate('/')}>
-      <div className="center-screen" style={{ padding: '8px 0 20px' }}>
-        <div style={{ fontSize: 40, fontWeight: 700 }}>{HAZARD_RISK_SCORE} / 10</div>
-        <div className="section-subtitle" style={{ margin: 0 }}>High wildfire risk</div>
-        <p className="section-subtitle" style={{ margin: 0 }}>
+      <div className="hazard-score-card">
+        <div className="hazard-score-emoji">{riskEmoji(HAZARD_RISK_SCORE)}</div>
+        <div className="hazard-score-value">
+          {HAZARD_RISK_SCORE} <span>/ 10</span>
+        </div>
+        <div className="hazard-score-label">High wildfire risk</div>
+        <p className="hazard-score-note">
           AI estimate — not 100% accurate. Verify with a free FireSmart home assessment.
         </p>
       </div>
 
       <div className="section-title" style={{ fontSize: 15 }}>Ranked fixes</div>
 
-      {CHECKLIST_ITEMS.map((item) => (
-        <div key={item.id} className="list-row" style={{ cursor: 'default' }}>
-          <div className="list-row-main">
-            <span className="list-row-label">{item.label}</span>
-            <span className="list-row-sub">{item.cost}</span>
+      {CHECKLIST_ITEMS.map((item) => {
+        const done = checklistProgress[item.id]?.done
+        return (
+          <div key={item.id} className="todo-item">
+            <span className={`todo-checkbox${done ? ' todo-checkbox-done' : ''}`}>
+              {done ? '✓' : ''}
+            </span>
+            <div className="list-row-main">
+              <span
+                className="list-row-label"
+                style={done ? { textDecoration: 'line-through', color: '#999' } : undefined}
+              >
+                {item.label}
+              </span>
+              <span className="list-row-sub">{item.cost}</span>
+            </div>
           </div>
-          <span className="status-icon" />
-        </div>
-      ))}
+        )
+      })}
 
       <div className="help-link" onClick={() => {}}>
         FireSmart BC — book a free home assessment ↗

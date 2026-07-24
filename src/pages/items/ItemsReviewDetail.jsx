@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import PhoneFrame from '../../components/PhoneFrame'
 import FooterNav from '../../components/FooterNav'
+import { EditIcon } from '../../components/Icons'
 import { useFlow, PHOTO_CATEGORIES } from '../../context/FlowContext'
 
 export default function ItemsReviewDetail() {
@@ -31,80 +32,33 @@ export default function ItemsReviewDetail() {
       {items.length === 0 ? (
         <div className="section-subtitle">No items detected in this category.</div>
       ) : (
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            gap: 12,
-            marginBottom: 16,
-          }}
-        >
+        <div className="item-photo-grid">
           {items.map((item) => (
-            <div key={item.id}>
-              <div
-                style={{
-                  aspectRatio: '1 / 1',
-                  borderRadius: 10,
-                  background: 'linear-gradient(135deg, #e2e4ea, #cfd2da)',
-                  position: 'relative',
-                  display: 'flex',
-                  alignItems: 'flex-end',
-                  overflow: 'hidden',
-                }}
-              >
+            <div key={item.id} className="item-photo-card">
+              <div className="item-photo-thumb">
                 <button
                   type="button"
+                  className="item-edit-btn"
                   onClick={() => startEditing(item)}
-                  aria-label="Edit label"
-                  style={{
-                    position: 'absolute',
-                    top: 6,
-                    right: 6,
-                    width: 24,
-                    height: 24,
-                    borderRadius: '50%',
-                    border: 'none',
-                    background: 'rgba(255,255,255,0.9)',
-                    fontSize: 12,
-                    cursor: 'pointer',
-                  }}
+                  aria-label={`Rename ${item.label}`}
+                  title="Rename item"
                 >
-                  ✎
+                  <EditIcon />
                 </button>
-                {editingId !== item.id && (
-                  <div
-                    style={{
-                      width: '100%',
-                      padding: '6px 8px',
-                      fontSize: 12,
-                      fontWeight: 600,
-                      color: '#111',
-                      background: 'rgba(255,255,255,0.85)',
-                    }}
-                  >
-                    {item.label}
-                  </div>
-                )}
               </div>
-              {editingId === item.id && (
+              {editingId === item.id ? (
                 <input
                   autoFocus
+                  className="item-photo-input"
                   value={draftLabel}
                   onChange={(e) => setDraftLabel(e.target.value)}
                   onBlur={() => commitEdit(item.id)}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter') commitEdit(item.id)
                   }}
-                  style={{
-                    marginTop: 6,
-                    width: '100%',
-                    padding: '8px 10px',
-                    border: '1px solid #ddd',
-                    borderRadius: 8,
-                    fontSize: 13,
-                    fontFamily: 'inherit',
-                  }}
                 />
+              ) : (
+                <div className="item-photo-label">{item.label}</div>
               )}
             </div>
           ))}

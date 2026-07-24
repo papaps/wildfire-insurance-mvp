@@ -28,7 +28,7 @@ export default function DocumentsList() {
 
   return (
     <PhoneFrame step="Step 2 of 2" onBack={() => navigate('/property-details')}>
-      <div className="section-title">Upload Documents</div>
+      <div className="section-title doc-list-title">Upload Documents</div>
 
       {DOCUMENT_TYPES.map((doc) => {
         const docState = documents[doc.id] || {}

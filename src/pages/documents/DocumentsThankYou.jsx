@@ -19,7 +19,6 @@ export default function DocumentsThankYou() {
         onBack={() => navigate('/documents')}
         nextLabel="Next"
         onNext={() => navigate('/photos')}
-        progress={1}
       />
     </PhoneFrame>
   )

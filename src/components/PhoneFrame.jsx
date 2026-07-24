@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom'
+import { ChatIcon, HomeIcon, ProfileIcon } from './Icons'
 
 // Shared page shell used by every screen: header row (optional back button /
 // title / step badge) and scrollable content area. Pass `tabBar` to show the
@@ -45,7 +46,9 @@ export default function PhoneFrame({
       {tabBar ? (
         <div className="phone-tabbar">
           <div className="phone-tab phone-tab-active">
-            <span className="phone-tab-icon">⌂</span>
+            <span className="phone-tab-icon">
+              <HomeIcon />
+            </span>
             <span>Home</span>
           </div>
           <button
@@ -53,11 +56,15 @@ export default function PhoneFrame({
             type="button"
             onClick={() => navigate('/chat')}
           >
-            <span className="phone-tab-icon">💬</span>
+            <span className="phone-tab-icon">
+              <ChatIcon />
+            </span>
             <span>Chat</span>
           </button>
           <div className="phone-tab">
-            <span className="phone-tab-icon">◐</span>
+            <span className="phone-tab-icon">
+              <ProfileIcon />
+            </span>
             <span>Profile</span>
           </div>
         </div>

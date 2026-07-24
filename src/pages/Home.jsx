@@ -16,9 +16,13 @@ export default function Home() {
     await signOut()
   }
 
-  function handleDelete(id) {
-    removeProperty(id)
+  async function handleDelete(id) {
     setOpenPropertyMenuId(null)
+    try {
+      await removeProperty(id)
+    } catch (error) {
+      alert('Failed to delete property. Please try again.')
+    }
   }
 
   return (
