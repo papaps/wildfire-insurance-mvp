@@ -5,6 +5,7 @@ import { AuthProvider, useAuth } from './context/AuthContext'
 import Login from './pages/auth/Login'
 import SignUp from './pages/auth/SignUp'
 import Home from './pages/Home'
+import Profile from './pages/Profile'
 import PropertyDetails from './pages/PropertyDetails'
 
 import DocumentsList from './pages/documents/DocumentsList'
@@ -54,6 +55,7 @@ function AppRoutes() {
       <Route path="/signup" element={session ? <Navigate to="/" replace /> : <SignUp />} />
 
       <Route path="/" element={<RequireAuth><Home /></RequireAuth>} />
+      <Route path="/profile" element={<RequireAuth><Profile /></RequireAuth>} />
       <Route path="/property-details" element={<RequireAuth><PropertyDetails /></RequireAuth>} />
 
       <Route path="/documents" element={<RequireAuth><DocumentsList /></RequireAuth>} />

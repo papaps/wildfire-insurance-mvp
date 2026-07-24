@@ -1,5 +1,11 @@
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { ChatIcon, HomeIcon, ProfileIcon } from './Icons'
+
+const TABS = [
+  { label: 'Home', path: '/', Icon: HomeIcon },
+  { label: 'Chat', path: '/chat', Icon: ChatIcon },
+  { label: 'Profile', path: '/profile', Icon: ProfileIcon },
+]
 
 // Shared page shell used by every screen: header row (optional back button /
 // title / step badge) and scrollable content area. Pass `tabBar` to show the
@@ -14,6 +20,7 @@ export default function PhoneFrame({
   children,
 }) {
   const navigate = useNavigate()
+  const { pathname } = useLocation()
 
   function handleBack() {
     if (onBack) onBack()
@@ -45,28 +52,23 @@ export default function PhoneFrame({
 
       {tabBar ? (
         <div className="phone-tabbar">
-          <div className="phone-tab phone-tab-active">
-            <span className="phone-tab-icon">
-              <HomeIcon />
-            </span>
-            <span>Home</span>
-          </div>
-          <button
-            className="phone-tab phone-tab-button"
-            type="button"
-            onClick={() => navigate('/chat')}
-          >
-            <span className="phone-tab-icon">
-              <ChatIcon />
-            </span>
-            <span>Chat</span>
-          </button>
-          <div className="phone-tab">
-            <span className="phone-tab-icon">
-              <ProfileIcon />
-            </span>
-            <span>Profile</span>
-          </div>
+          {TABS.map(({ label, path, Icon }) => {
+            const active = pathname === path
+            return (
+              <button
+                key={path}
+                className={`phone-tab phone-tab-button${active ? ' phone-tab-active' : ''}`}
+                type="button"
+                onClick={() => navigate(path)}
+                aria-current={active ? 'page' : undefined}
+              >
+                <span className="phone-tab-icon">
+                  <Icon />
+                </span>
+                <span>{label}</span>
+              </button>
+            )
+          })}
         </div>
       ) : null}
     </div>

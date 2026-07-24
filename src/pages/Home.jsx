@@ -1,20 +1,13 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import PhoneFrame from '../components/PhoneFrame'
-import { CirclePlusIcon, LogOutIcon, MenuIcon, MoreIcon, TrashIcon } from '../components/Icons'
-import { useAuth } from '../context/AuthContext'
+import { CirclePlusIcon, MoreIcon, TrashIcon } from '../components/Icons'
 import { useFlow } from '../context/FlowContext'
 
 export default function Home() {
   const navigate = useNavigate()
-  const { signOut } = useAuth()
   const { properties, removeProperty } = useFlow()
-  const [menuOpen, setMenuOpen] = useState(false)
   const [openPropertyMenuId, setOpenPropertyMenuId] = useState(null)
-
-  async function handleSignOut() {
-    await signOut()
-  }
 
   async function handleDelete(id) {
     setOpenPropertyMenuId(null)
@@ -29,27 +22,6 @@ export default function Home() {
     <PhoneFrame showBack={false} tabBar>
       <div className="home-header">
         <h1 className="home-title">Home</h1>
-        <div className="home-menu">
-          <button
-            type="button"
-            className="icon-btn"
-            aria-label="Menu"
-            onClick={() => setMenuOpen((open) => !open)}
-          >
-            <MenuIcon />
-          </button>
-          {menuOpen && (
-            <>
-              <div className="menu-backdrop" onClick={() => setMenuOpen(false)} />
-              <div className="menu-popover">
-                <button type="button" className="menu-item" onClick={handleSignOut}>
-                  <LogOutIcon />
-                  Sign out
-                </button>
-              </div>
-            </>
-          )}
-        </div>
       </div>
 
       {properties.length > 0 && (
