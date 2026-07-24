@@ -40,7 +40,7 @@ export default function SignUp() {
 
   if (confirmationPending) {
     return (
-      <PhoneFrame title="Sign Up" showBack={false}>
+      <PhoneFrame showBack={false}>
         <div className="center-screen">
           <div className="big-icon">✓</div>
           <div className="section-title">Check your email</div>
@@ -56,7 +56,7 @@ export default function SignUp() {
   }
 
   return (
-    <PhoneFrame title="Sign Up" showBack={false}>
+    <PhoneFrame showBack={false}>
       <div className="section-title">Create your account</div>
       <p className="section-subtitle">Enter your details to get started</p>
 
