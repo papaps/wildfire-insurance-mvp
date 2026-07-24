@@ -402,11 +402,34 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  white-space: nowrap;
   font-family: var(--font-display);
 }
 
 .btn-outline:hover {
   background: var(--teal-wash);
+}
+
+.btn-outline:disabled {
+  color: var(--teal-muted-light);
+  border-color: var(--teal-wash);
+  cursor: not-allowed;
+}
+
+.btn-outline:disabled:hover {
+  background: var(--white);
+}
+
+.status-pill {
+  background: var(--teal-wash);
+  color: var(--teal-muted);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: var(--font-display);
+  cursor: default;
+  white-space: nowrap;
 }
 
 .footer-nav-wrap {

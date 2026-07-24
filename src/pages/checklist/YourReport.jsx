@@ -23,7 +23,7 @@ export default function YourReport() {
           <span className="list-row-label">Risk score &amp; summary</span>
           <span className="list-row-sub">AI assessment with disclaimer</span>
         </div>
-        <span className="btn-outline" style={{ cursor: 'default' }}>Included</span>
+        <span className="status-pill">Included</span>
       </div>
 
       <div className="list-row" style={{ cursor: 'default' }}>
@@ -31,7 +31,7 @@ export default function YourReport() {
           <span className="list-row-label">Completed fixes ({completedCount})</span>
           <span className="list-row-sub">With completion dates</span>
         </div>
-        <span className="btn-outline" style={{ cursor: 'default' }}>Included</span>
+        <span className="status-pill">Included</span>
       </div>
 
       <div className="list-row" style={{ cursor: 'default' }}>
