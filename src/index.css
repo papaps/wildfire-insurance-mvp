@@ -11,8 +11,8 @@
   --teal-muted: #4C6A6A;
   --teal-muted-light: #6B8484;
 
-  --font-display: "Styrene A", "Styrene A Fallback", Arial, "Helvetica Neue", sans-serif;
-  --font-body: "Tiempos Text", "Tiempos Text Fallback", Georgia, "Times New Roman", serif;
+  --font-display: "Space Grotesk", Arial, "Helvetica Neue", sans-serif;
+  --font-body: "Source Serif 4", Georgia, "Times New Roman", serif;
 
   font-family: var(--font-body);
   color: var(--teal);
