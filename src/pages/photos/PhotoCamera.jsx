@@ -14,7 +14,7 @@ export default function PhotoCamera() {
         style={{
           position: 'absolute',
           inset: 0,
-          background: '#111',
+          background: 'var(--teal)',
           display: 'flex',
           flexDirection: 'column',
         }}
@@ -31,7 +31,7 @@ export default function PhotoCamera() {
             height: 36,
             borderRadius: '50%',
             background: 'rgba(255,255,255,0.15)',
-            color: '#fff',
+            color: 'var(--white)',
             border: 'none',
             fontSize: 18,
             cursor: 'pointer',
@@ -53,7 +53,7 @@ export default function PhotoCamera() {
             textAlign: 'center',
           }}
         >
-          <p style={{ color: '#fff', fontSize: 14, fontWeight: 600, margin: 0 }}>
+          <p style={{ color: 'var(--white)', fontSize: 14, fontWeight: 500, margin: 0, fontFamily: 'var(--font-display)' }}>
             Take a clear photo of your {label}
           </p>
           <div
@@ -61,12 +61,12 @@ export default function PhotoCamera() {
               width: '100%',
               aspectRatio: '3 / 4',
               borderRadius: 12,
-              background: 'linear-gradient(135deg, #333, #1a1a1a)',
+              background: 'linear-gradient(135deg, var(--teal-tint), var(--teal))',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               fontSize: 48,
-              border: '1px solid #444',
+              border: '1px solid rgba(255,255,255,0.25)',
             }}
           >
             📷
@@ -82,7 +82,7 @@ export default function PhotoCamera() {
               width: 68,
               height: 68,
               borderRadius: '50%',
-              background: '#fff',
+              background: 'var(--white)',
               border: '4px solid rgba(255,255,255,0.4)',
               cursor: 'pointer',
             }}

@@ -24,13 +24,14 @@ export default function PhotoPreview() {
           width: '100%',
           aspectRatio: '3 / 4',
           borderRadius: 12,
-          background: 'linear-gradient(135deg, #555, #222)',
+          background: 'linear-gradient(135deg, var(--teal-tint), var(--teal))',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          color: '#fff',
+          color: 'var(--white)',
           fontSize: 16,
-          fontWeight: 600,
+          fontWeight: 500,
+          fontFamily: 'var(--font-display)',
           marginBottom: 16,
         }}
       >

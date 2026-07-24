@@ -2,14 +2,6 @@ import { useNavigate } from 'react-router-dom'
 import PhoneFrame from '../../components/PhoneFrame'
 import { useFlow, CHECKLIST_ITEMS, HAZARD_RISK_SCORE } from '../../context/FlowContext'
 
-function riskEmoji(score) {
-  if (score < 3) return '😄'
-  if (score < 5) return '🙂'
-  if (score < 7) return '😐'
-  if (score < 9) return '😟'
-  return '😱'
-}
-
 export default function HazardReport() {
   const navigate = useNavigate()
   const { checklistProgress } = useFlow()
@@ -17,7 +9,6 @@ export default function HazardReport() {
   return (
     <PhoneFrame title="Your hazard report" onBack={() => navigate('/')}>
       <div className="hazard-score-card">
-        <div className="hazard-score-emoji">{riskEmoji(HAZARD_RISK_SCORE)}</div>
         <div className="hazard-score-value">
           {HAZARD_RISK_SCORE} <span>/ 10</span>
         </div>
@@ -39,7 +30,7 @@ export default function HazardReport() {
             <div className="list-row-main">
               <span
                 className="list-row-label"
-                style={done ? { textDecoration: 'line-through', color: '#999' } : undefined}
+                style={done ? { textDecoration: 'line-through', color: 'var(--teal-muted-light)' } : undefined}
               >
                 {item.label}
               </span>

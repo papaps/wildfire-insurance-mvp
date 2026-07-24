@@ -21,7 +21,7 @@ export default function ReviewSuccess() {
         style={{
           aspectRatio: '4 / 3',
           borderRadius: 10,
-          background: 'linear-gradient(135deg, #e2e4ea, #cfd2da)',
+          background: 'linear-gradient(135deg, var(--teal-wash), #C9D6D6)',
           marginBottom: 16,
         }}
       />

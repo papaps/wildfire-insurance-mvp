@@ -2,17 +2,18 @@
 
 .app-bg {
   min-height: 100vh;
-  background: #ffffff;
+  background: var(--white);
 }
 
 .phone-shell {
   width: 100%;
   min-height: 100vh;
-  background: #ffffff;
+  background: var(--white);
   display: flex;
   flex-direction: column;
   position: relative;
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family: var(--font-body);
+  color: var(--teal);
 }
 
 .phone-header {
@@ -49,27 +50,28 @@
   font-size: 22px;
   line-height: 1;
   cursor: pointer;
-  color: #111;
+  color: var(--teal);
   padding: 0;
 }
 
 .phone-back:hover {
-  background: #f0f0f0;
+  background: var(--teal-wash);
 }
 
 .phone-title {
   flex: 1;
   text-align: center;
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 500;
   margin: 0;
-  color: #111;
+  color: var(--teal);
 }
 
 .phone-step {
   font-size: 12px;
-  color: #888;
+  color: var(--teal-muted-light);
   white-space: nowrap;
+  font-family: var(--font-display);
 }
 
 .phone-content {
@@ -88,8 +90,8 @@
   display: flex;
   justify-content: space-around;
   padding: 6px 0 calc(6px + env(safe-area-inset-bottom));
-  border-top: 1px solid #eee;
-  background: #ffffff;
+  border-top: 1px solid var(--teal-wash);
+  background: var(--white);
   flex-shrink: 0;
   z-index: 20;
 }
@@ -104,18 +106,19 @@
   align-items: center;
   justify-content: center;
   font-size: 11px;
-  color: #999;
+  color: var(--teal-muted-light);
   gap: 3px;
   padding: 8px 20px;
   min-width: 64px;
   min-height: 48px;
   border-radius: 12px;
   transition: color 0.15s ease, background-color 0.15s ease;
+  font-family: var(--font-display);
 }
 
 .phone-tab-active {
-  color: #111;
-  font-weight: 700;
+  color: var(--teal);
+  font-weight: 500;
 }
 
 .phone-tab-button {
@@ -126,7 +129,7 @@
 }
 
 .phone-tab-button:hover {
-  background: #f2f2f2;
+  background: var(--teal-wash);
 }
 
 .phone-tab-icon {
@@ -141,8 +144,8 @@
 }
 
 .phone-tab-active .phone-tab-icon {
-  background: #111;
-  color: #fff;
+  background: var(--coral);
+  color: var(--white);
 }
 
 /* --- Shared form / list / button primitives --- */
@@ -156,16 +159,19 @@
 
 .field label {
   font-size: 12px;
-  color: #666;
+  color: var(--teal-muted);
+  font-family: var(--font-display);
 }
 
 .field input,
 .field select {
   padding: 10px 12px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--teal-wash);
   border-radius: 8px;
   font-size: 14px;
-  font-family: inherit;
+  font-family: var(--font-body);
+  color: var(--teal);
+  background: var(--white);
 }
 
 .field-row {
@@ -202,37 +208,39 @@
   border-radius: 10px;
   border: none;
   font-size: 15px;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
   flex: 1;
+  font-family: var(--font-display);
 }
 
 .btn-primary {
-  background: #111;
-  color: #fff;
+  background: var(--coral);
+  color: var(--white);
 }
 
 .btn-primary:hover {
-  background: #000;
+  background: var(--coral-tint);
 }
 
 .btn-primary:disabled {
-  background: #ccc;
+  background: var(--teal-wash);
+  color: var(--teal-muted-light);
   cursor: not-allowed;
 }
 
 .btn-primary:disabled:hover {
-  background: #ccc;
+  background: var(--teal-wash);
 }
 
 .btn-secondary {
-  background: #fff;
-  color: #111;
-  border: 1px solid #ccc;
+  background: var(--white);
+  color: var(--teal);
+  border: 1px solid var(--teal-wash);
 }
 
 .btn-secondary:hover {
-  background: #f5f5f5;
+  background: var(--teal-wash);
 }
 
 .icon-btn {
@@ -240,7 +248,7 @@
   background: none;
   padding: 6px;
   border-radius: 8px;
-  color: #111;
+  color: var(--teal);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -248,7 +256,7 @@
 }
 
 .icon-btn:hover {
-  background: #f0f0f0;
+  background: var(--teal-wash);
 }
 
 /* --- Home screen --- */
@@ -263,9 +271,9 @@
 
 .home-title {
   font-size: 28px;
-  font-weight: 800;
+  font-weight: 500;
   margin: 0;
-  color: #111;
+  color: var(--teal);
 }
 
 .home-menu {
@@ -282,10 +290,10 @@
   position: absolute;
   top: calc(100% + 6px);
   right: 0;
-  background: #fff;
-  border: 1px solid #eee;
+  background: var(--white);
+  border: 1px solid var(--teal-wash);
   border-radius: 10px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 8px 24px rgba(0, 64, 64, 0.14);
   overflow: hidden;
   z-index: 11;
   min-width: 150px;
@@ -300,20 +308,21 @@
   border: none;
   background: none;
   font-size: 14px;
-  font-weight: 600;
-  color: #111;
-  font-family: inherit;
+  font-weight: 500;
+  color: var(--teal);
+  font-family: var(--font-display);
   cursor: pointer;
   text-align: left;
 }
 
 .menu-item:hover {
-  background: #f5f5f5;
+  background: var(--teal-wash);
 }
 
 .menu-item:disabled {
-  color: #bbb;
+  color: var(--teal-muted-light);
   cursor: not-allowed;
+  opacity: 0.6;
 }
 
 .menu-item:disabled:hover {
@@ -335,15 +344,16 @@
   gap: 12px;
   width: 100%;
   padding: 28px 20px;
-  border: 1.5px solid #eee;
+  border: 1.5px solid var(--teal-wash);
   border-radius: 16px;
   margin-bottom: 12px;
 }
 
 .property-card-label {
   font-size: 16px;
-  font-weight: 700;
-  color: #111;
+  font-weight: 500;
+  color: var(--teal);
+  font-family: var(--font-display);
 }
 
 .property-card-menu {
@@ -359,36 +369,37 @@
   width: 100%;
   padding: 28px 20px;
   background: none;
-  border: 2px dashed #ccc;
+  border: 2px dashed var(--teal-muted-light);
   border-radius: 16px;
-  color: #111;
+  color: var(--teal);
   font-size: 17px;
-  font-weight: 700;
-  font-family: inherit;
+  font-weight: 500;
+  font-family: var(--font-display);
   cursor: pointer;
 }
 
 .add-property-box:hover {
-  border-color: #aaa;
-  background: #fafafa;
+  border-color: var(--teal);
+  background: var(--teal-wash);
 }
 
 .btn-outline {
-  background: #fff;
-  color: #111;
-  border: 1px solid #111;
+  background: var(--white);
+  color: var(--teal);
+  border: 1px solid var(--teal);
   border-radius: 8px;
   padding: 10px 14px;
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  font-family: var(--font-display);
 }
 
 .btn-outline:hover {
-  background: #f5f5f5;
+  background: var(--teal-wash);
 }
 
 .footer-nav-wrap {
@@ -410,7 +421,7 @@
 }
 
 .doc-item {
-  border: 1px solid #eee;
+  border: 1px solid var(--teal-wash);
   border-radius: 12px;
   margin-bottom: 10px;
   overflow: hidden;
@@ -431,7 +442,7 @@
 }
 
 .doc-item-header:hover {
-  background: #fafafa;
+  background: var(--teal-wash);
 }
 
 .doc-item-title {
@@ -442,14 +453,14 @@
 
 .doc-item-status {
   font-size: 11px;
-  color: #999;
+  color: var(--teal-muted-light);
   font-style: italic;
 }
 
 .doc-item-chevron {
   display: flex;
   flex-shrink: 0;
-  color: #999;
+  color: var(--teal-muted-light);
   transition: transform 0.15s ease;
 }
 
@@ -463,9 +474,10 @@
 
 .doc-item-question {
   font-size: 14px;
-  font-weight: 600;
-  color: #111;
+  font-weight: 500;
+  color: var(--teal);
   margin: 0 0 10px;
+  font-family: var(--font-display);
 }
 
 .doc-upload-btn {
@@ -473,24 +485,24 @@
   align-items: center;
   gap: 8px;
   padding: 10px 16px;
-  background: #111;
-  color: #fff;
+  background: var(--coral);
+  color: var(--white);
   border: none;
   border-radius: 8px;
   font-size: 13px;
-  font-weight: 600;
-  font-family: inherit;
+  font-weight: 500;
+  font-family: var(--font-display);
   cursor: pointer;
   margin-top: 4px;
 }
 
 .doc-upload-btn:hover {
-  background: #000;
+  background: var(--coral-tint);
 }
 
 .doc-upload-caption {
   font-size: 11px;
-  color: #999;
+  color: var(--teal-muted-light);
   margin: 6px 0 0;
 }
 
@@ -499,7 +511,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 14px 0;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid var(--teal-wash);
   cursor: pointer;
   background: none;
   border-left: none;
@@ -511,7 +523,7 @@
 }
 
 button.list-row:hover {
-  background: #fafafa;
+  background: var(--teal-wash);
 }
 
 .list-row-main {
@@ -522,20 +534,21 @@ button.list-row:hover {
 
 .list-row-label {
   font-size: 14px;
-  font-weight: 600;
-  color: #111;
+  font-weight: 500;
+  color: var(--teal);
+  font-family: var(--font-display);
 }
 
 .list-row-sub {
   font-size: 12px;
-  color: #888;
+  color: var(--teal-muted-light);
 }
 
 .status-icon {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  border: 1.5px solid #ccc;
+  border: 1.5px solid var(--teal-muted-light);
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -545,19 +558,19 @@ button.list-row:hover {
 }
 
 .status-icon.done {
-  background: #3ecf8e;
-  border-color: #3ecf8e;
-  color: #fff;
+  background: var(--coral);
+  border-color: var(--coral);
+  color: var(--white);
 }
 
 .upload-box {
   background: none;
   width: 100%;
-  border: 1.5px dashed #ccc;
+  border: 1.5px dashed var(--teal-muted-light);
   border-radius: 10px;
   padding: 20px;
   text-align: center;
-  color: #999;
+  color: var(--teal-muted-light);
   font-size: 12px;
   margin-bottom: 14px;
   display: flex;
@@ -580,20 +593,22 @@ button.list-row:hover {
 
 .section-title {
   font-size: 20px;
-  font-weight: 700;
+  font-weight: 500;
   margin: 8px 0 4px;
+  color: var(--teal);
+  font-family: var(--font-display);
 }
 
 .section-subtitle {
   font-size: 13px;
-  color: #777;
+  color: var(--teal-muted);
   margin: 0 0 18px;
   line-height: 1.4;
 }
 
 .help-link {
   font-size: 12px;
-  color: #3366cc;
+  color: var(--coral);
   text-decoration: underline;
   cursor: pointer;
   margin-bottom: 14px;
@@ -615,8 +630,8 @@ button.list-row:hover {
   width: 64px;
   height: 64px;
   border-radius: 50%;
-  background: #3ecf8e;
-  color: #fff;
+  background: var(--coral);
+  color: var(--white);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -626,8 +641,8 @@ button.list-row:hover {
 .spinner {
   width: 40px;
   height: 40px;
-  border: 4px solid #eee;
-  border-top-color: #111;
+  border: 4px solid var(--teal-wash);
+  border-top-color: var(--teal);
   border-radius: 50%;
   animation: spin 0.9s linear infinite;
 }
@@ -641,14 +656,14 @@ button.list-row:hover {
 .progress-track {
   width: 100%;
   height: 6px;
-  background: #eee;
+  background: var(--teal-wash);
   border-radius: 3px;
   overflow: hidden;
 }
 
 .progress-fill {
   height: 100%;
-  background: #111;
+  background: var(--coral);
   transition: width 0.3s ease;
 }
 
@@ -663,12 +678,12 @@ button.list-row:hover {
 
 .auth-row .radio-option {
   font-size: 13px;
-  color: #555;
+  color: var(--teal-muted);
 }
 
 .auth-disabled-link {
   cursor: default;
-  color: #3366cc;
+  color: var(--coral);
 }
 
 .auth-submit {
@@ -679,7 +694,7 @@ button.list-row:hover {
 
 .auth-divider {
   text-align: center;
-  color: #999;
+  color: var(--teal-muted-light);
   font-size: 12px;
   margin: 10px 0 14px;
 }
@@ -687,7 +702,7 @@ button.list-row:hover {
 .auth-switch {
   text-align: center;
   font-size: 13px;
-  color: #555;
+  color: var(--teal-muted);
   margin-top: 18px;
 }
 
@@ -734,19 +749,20 @@ button.list-row:hover {
   border-radius: 16px;
   font-size: 14px;
   line-height: 1.4;
+  font-family: var(--font-body);
 }
 
 .chat-bubble-assistant {
   align-self: flex-start;
-  background: #f0f0f0;
-  color: #111;
+  background: var(--teal-wash);
+  color: var(--teal);
   border-bottom-left-radius: 4px;
 }
 
 .chat-bubble-user {
   align-self: flex-end;
-  background: #111;
-  color: #fff;
+  background: var(--teal);
+  color: var(--white);
   border-bottom-right-radius: 4px;
 }
 
@@ -761,10 +777,11 @@ button.list-row:hover {
 .chat-input-row input {
   flex: 1;
   padding: 10px 12px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--teal-wash);
   border-radius: 20px;
   font-size: 14px;
-  font-family: inherit;
+  font-family: var(--font-body);
+  color: var(--teal);
 }
 
 .chat-input-row .btn {
@@ -785,7 +802,7 @@ button.list-row:hover {
 .item-photo-thumb {
   aspect-ratio: 1 / 1;
   border-radius: 10px;
-  background: linear-gradient(135deg, #e2e4ea, #cfd2da);
+  background: linear-gradient(135deg, var(--teal-wash), #C9D6D6);
   position: relative;
   overflow: hidden;
 }
@@ -798,13 +815,13 @@ button.list-row:hover {
   height: 30px;
   border-radius: 50%;
   border: none;
-  background: #fff;
-  color: #111;
+  background: var(--white);
+  color: var(--teal);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 2px 6px rgba(0, 64, 64, 0.25);
 }
 
 .item-edit-btn svg {
@@ -814,24 +831,26 @@ button.list-row:hover {
 }
 
 .item-edit-btn:hover {
-  background: #f0f0f0;
+  background: var(--teal-wash);
 }
 
 .item-photo-label {
   margin-top: 8px;
   font-size: 13px;
-  font-weight: 600;
-  color: #111;
+  font-weight: 500;
+  color: var(--teal);
+  font-family: var(--font-display);
 }
 
 .item-photo-input {
   margin-top: 8px;
   width: 100%;
   padding: 8px 10px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--teal-wash);
   border-radius: 8px;
   font-size: 13px;
-  font-family: inherit;
+  font-family: var(--font-body);
+  color: var(--teal);
 }
 
 /* --- Hazard report --- */
@@ -844,37 +863,33 @@ button.list-row:hover {
   gap: 6px;
   padding: 24px 20px;
   margin-bottom: 20px;
-  border: 1px solid #eee;
+  border: 1px solid var(--teal-wash);
   border-radius: 16px;
-}
-
-.hazard-score-emoji {
-  font-size: 44px;
-  line-height: 1;
-  margin-bottom: 4px;
 }
 
 .hazard-score-value {
   font-size: 32px;
-  font-weight: 800;
-  color: #111;
+  font-weight: 500;
+  color: var(--teal);
+  font-family: var(--font-display);
 }
 
 .hazard-score-value span {
   font-size: 16px;
-  font-weight: 600;
-  color: #888;
+  font-weight: 500;
+  color: var(--teal-muted-light);
 }
 
 .hazard-score-label {
   font-size: 14px;
-  font-weight: 700;
-  color: #111;
+  font-weight: 500;
+  color: var(--teal);
+  font-family: var(--font-display);
 }
 
 .hazard-score-note {
   font-size: 12px;
-  color: #888;
+  color: var(--teal-muted-light);
   margin: 4px 0 0;
   line-height: 1.4;
 }
@@ -884,7 +899,7 @@ button.list-row:hover {
   align-items: center;
   gap: 12px;
   padding: 14px 16px;
-  border: 1px solid #eee;
+  border: 1px solid var(--teal-wash);
   border-radius: 12px;
   margin-bottom: 10px;
 }
@@ -893,7 +908,7 @@ button.list-row:hover {
   width: 22px;
   height: 22px;
   border-radius: 6px;
-  border: 1.5px solid #ccc;
+  border: 1.5px solid var(--teal-muted-light);
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -903,7 +918,7 @@ button.list-row:hover {
 }
 
 .todo-checkbox-done {
-  background: #111;
-  border-color: #111;
-  color: #fff;
+  background: var(--coral);
+  border-color: var(--coral);
+  color: var(--white);
 }

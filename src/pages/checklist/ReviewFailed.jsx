@@ -20,7 +20,7 @@ export default function ReviewFailed() {
         style={{
           aspectRatio: '4 / 3',
           borderRadius: 10,
-          background: 'linear-gradient(135deg, #e2e4ea, #cfd2da)',
+          background: 'linear-gradient(135deg, var(--teal-wash), #C9D6D6)',
           marginBottom: 16,
         }}
       />
@@ -31,7 +31,7 @@ export default function ReviewFailed() {
         Try a photo from further back that shows the full area.
       </div>
 
-      <div className="section-subtitle" style={{ fontWeight: 600, color: '#111' }}>
+      <div className="section-subtitle" style={{ fontWeight: 500, color: 'var(--teal)' }}>
         YOU HAVE THE FINAL SAY — The AI can be wrong. If you're sure the work is done, you
         can mark it complete yourself.
       </div>

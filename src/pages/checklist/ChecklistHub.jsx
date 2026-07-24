@@ -11,7 +11,7 @@ export default function ChecklistHub() {
   return (
     <PhoneFrame title="Your checklist" onBack={() => navigate('/checklist')}>
       <div style={{ textAlign: 'center', marginBottom: 12 }}>
-        <div style={{ fontSize: 24, fontWeight: 700 }}>{HAZARD_RISK_SCORE} / 10</div>
+        <div style={{ fontSize: 24, fontWeight: 500, fontFamily: 'var(--font-display)', color: 'var(--teal)' }}>{HAZARD_RISK_SCORE} / 10</div>
         <div className="section-subtitle" style={{ margin: 0 }}>High wildfire risk</div>
       </div>
 

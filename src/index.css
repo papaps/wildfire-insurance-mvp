@@ -1,7 +1,22 @@
 :root {
-  font-family: system-ui, -apple-system, sans-serif;
-  color: #1a1a1a;
-  background: #f7f7f8;
+  --teal: #004040;
+  --teal-tint: #0A5A5A;
+  --teal-wash: #E6EDED;
+  --coral: #DE7356;
+  --coral-tint: #E88E75;
+  --coral-wash: #FBEAE4;
+  --white: #FFFFFF;
+
+  --teal-muted-dark: #3D5959;
+  --teal-muted: #4C6A6A;
+  --teal-muted-light: #6B8484;
+
+  --font-display: "Styrene A", "Styrene A Fallback", Arial, "Helvetica Neue", sans-serif;
+  --font-body: "Tiempos Text", "Tiempos Text Fallback", Georgia, "Times New Roman", serif;
+
+  font-family: var(--font-body);
+  color: var(--teal);
+  background: var(--white);
 }
 
 * {
@@ -10,6 +25,10 @@
 
 body {
   margin: 0;
+}
+
+h1, h2, h3, h4, h5, h6, button, .btn {
+  font-family: var(--font-display);
 }
 
 .container {
@@ -23,7 +42,7 @@ h1 {
 }
 
 .subtitle {
-  color: #888;
+  color: var(--teal-muted);
   margin-top: 0;
 }
 
@@ -36,23 +55,25 @@ h1 {
 input:not([type='radio']):not([type='checkbox']) {
   flex: 1;
   padding: 10px 12px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--teal-wash);
   border-radius: 8px;
   font-size: 15px;
+  font-family: var(--font-body);
+  color: var(--teal);
 }
 
 button {
   padding: 10px 16px;
   border: none;
   border-radius: 8px;
-  background: #3ecf8e;
-  color: #05170e;
-  font-weight: 600;
+  background: var(--coral);
+  color: var(--white);
+  font-weight: 500;
   cursor: pointer;
 }
 
 button:hover {
-  background: #34b87d;
+  background: var(--coral-tint);
 }
 
 .notes {
@@ -66,15 +87,15 @@ button:hover {
   align-items: center;
   justify-content: space-between;
   padding: 12px 14px;
-  background: #fff;
-  border: 1px solid #eee;
+  background: var(--white);
+  border: 1px solid var(--teal-wash);
   border-radius: 8px;
   margin-bottom: 8px;
 }
 
 .delete {
   background: transparent;
-  color: #c00;
+  color: #c0392b;
   padding: 4px 8px;
   font-size: 14px;
 }
@@ -84,9 +105,9 @@ button:hover {
 }
 
 .error {
-  color: #c00;
+  color: #c0392b;
 }
 
 .empty {
-  color: #999;
+  color: var(--teal-muted-light);
 }
