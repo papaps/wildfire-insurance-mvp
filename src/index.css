@@ -23,6 +23,11 @@
   box-sizing: border-box;
 }
 
+input[type='radio'],
+input[type='checkbox'] {
+  accent-color: var(--coral);
+}
+
 body {
   margin: 0;
 }

@@ -347,6 +347,13 @@
   border: 1.5px solid var(--teal-wash);
   border-radius: 16px;
   margin-bottom: 12px;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.property-card:hover {
+  background: var(--teal-wash);
+  border-color: var(--teal-muted-light);
 }
 
 .property-card-label {
