@@ -26,20 +26,27 @@ export default function YourInsurer() {
       </div>
 
       <div className="radio-row" style={{ flexDirection: 'column', gap: 0 }}>
-        {filteredInsurers.map((i) => (
-          <label key={i.id} className="list-row" style={{ cursor: 'pointer' }}>
-            <div className="list-row-main">
-              <span className="list-row-label">{i.label}</span>
-              <span className="list-row-sub">{i.firesmartNote}</span>
-            </div>
-            <input
-              type="radio"
-              name="insurer"
-              checked={insurer.insurerId === i.id}
-              onChange={() => setInsurer({ insurerId: i.id })}
-            />
-          </label>
-        ))}
+        {filteredInsurers.length === 0 ? (
+          <p className="section-subtitle" style={{ margin: '4px 0 8px' }}>
+            No insurers match "{search}". Try a different name, or choose "My insurer isn't
+            listed" below.
+          </p>
+        ) : (
+          filteredInsurers.map((i) => (
+            <label key={i.id} className="list-row" style={{ cursor: 'pointer' }}>
+              <div className="list-row-main">
+                <span className="list-row-label">{i.label}</span>
+                <span className="list-row-sub">{i.firesmartNote}</span>
+              </div>
+              <input
+                type="radio"
+                name="insurer"
+                checked={insurer.insurerId === i.id}
+                onChange={() => setInsurer({ insurerId: i.id })}
+              />
+            </label>
+          ))
+        )}
       </div>
 
       <div className="field">
