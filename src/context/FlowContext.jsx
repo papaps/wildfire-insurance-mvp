@@ -132,6 +132,7 @@ export function FlowProvider({ children }) {
     supabase
       .from('submissions')
       .select('id, street_address, city, created_at')
+      .eq('user_id', user.id)
       .order('created_at', { ascending: false })
       .then(({ data, error }) => {
         if (cancelled || error || !data) return
