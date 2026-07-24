@@ -26,7 +26,9 @@ export default function ItemsReview() {
           >
             <div className="list-row-main">
               <span className="list-row-label">{cat.label}</span>
-              <span className="list-row-sub">{count} items detected</span>
+              <span className="list-row-sub">
+                {count} {count === 1 ? 'item' : 'items'} detected
+              </span>
             </div>
             <span className="status-icon done">✓</span>
           </button>
