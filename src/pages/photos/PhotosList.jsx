@@ -24,6 +24,10 @@ export default function PhotosList() {
     addPhoto(id)
   }
 
+  const requiredComplete = PHOTO_CATEGORIES.filter((cat) => !cat.optional).every(
+    (cat) => (photos[cat.id]?.count ?? 0) > 0
+  )
+
   return (
     <PhoneFrame title="Upload Photos" onBack={() => navigate('/documents/thank-you')}>
       <div className="section-title">Upload Photos</div>
@@ -84,6 +88,7 @@ export default function PhotosList() {
       <FooterNav
         onBack={() => navigate('/documents/thank-you')}
         onNext={() => navigate('/photos/validating')}
+        nextDisabled={!requiredComplete}
       />
     </PhoneFrame>
   )

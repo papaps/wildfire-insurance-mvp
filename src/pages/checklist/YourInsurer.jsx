@@ -76,7 +76,7 @@ export default function YourInsurer() {
       <div
         className="help-link"
         style={{ textAlign: 'center', width: '100%' }}
-        onClick={() => console.log('insurer not listed')}
+        onClick={() => navigate('/checklist/share/browse')}
       >
         My insurer isn't listed
       </div>

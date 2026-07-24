@@ -17,7 +17,7 @@ export default function FireSmartInsurers() {
             <span className="list-row-label">{i.label}</span>
             <span className="list-row-sub">{i.firesmartNote}</span>
           </div>
-          <button type="button" className="btn-outline" onClick={() => {}}>
+          <button type="button" className="btn-outline" disabled title="Not available yet">
             Get a quote ↗
           </button>
         </div>

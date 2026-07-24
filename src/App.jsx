@@ -84,6 +84,8 @@ function AppRoutes() {
       <Route path="/checklist/done" element={<RequireAuth><AllDone /></RequireAuth>} />
 
       <Route path="/chat" element={<RequireAuth><Chat /></RequireAuth>} />
+
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   )
 }

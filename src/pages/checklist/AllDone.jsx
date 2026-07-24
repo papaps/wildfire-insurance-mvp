@@ -1,8 +1,10 @@
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import PhoneFrame from '../../components/PhoneFrame'
 
 export default function AllDone() {
   const navigate = useNavigate()
+  const location = useLocation()
+  const sent = Boolean(location.state?.sent)
 
   function handleDownload() {
     alert('This is a mockup — PDF export is not implemented.')
@@ -12,10 +14,11 @@ export default function AllDone() {
     <PhoneFrame title="All done" onBack={() => navigate('/')}>
       <div className="center-screen">
         <div className="big-icon">✓</div>
-        <div className="section-title">Record saved</div>
+        <div className="section-title">{sent ? 'Report sent' : 'Record saved'}</div>
         <p className="section-subtitle">
-          Your report and photos are stored privately on your device. Bring them to your
-          renewal, or share them with a FireSmart assessor.
+          {sent
+            ? "Your report has been sent to your insurer. Your ongoing photos and data stay stored privately on your device."
+            : 'Your report and photos are stored privately on your device. Bring them to your renewal, or share them with a FireSmart assessor.'}
         </p>
         <p className="section-subtitle">Next check-in reminder — January 2027</p>
       </div>

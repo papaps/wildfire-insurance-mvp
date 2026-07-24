@@ -55,23 +55,33 @@ export default function Home() {
       {properties.length > 0 && (
         <>
           {properties.map((property) => (
-            <div key={property.id} className="property-card">
+            <div
+              key={property.id}
+              className="property-card"
+              role="button"
+              tabIndex={0}
+              onClick={() => navigate('/documents')}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') navigate('/documents')
+              }}
+            >
               <span className="property-card-label">{property.address}</span>
               <div className="property-card-menu">
                 <button
                   type="button"
                   className="icon-btn"
                   aria-label="Property options"
-                  onClick={() =>
+                  onClick={(e) => {
+                    e.stopPropagation()
                     setOpenPropertyMenuId((id) => (id === property.id ? null : property.id))
-                  }
+                  }}
                 >
                   <MoreIcon />
                 </button>
                 {openPropertyMenuId === property.id && (
                   <>
                     <div className="menu-backdrop" onClick={() => setOpenPropertyMenuId(null)} />
-                    <div className="menu-popover">
+                    <div className="menu-popover" onClick={(e) => e.stopPropagation()}>
                       <button type="button" className="menu-item" disabled title="Not available yet">
                         <EditIcon />
                         Edit

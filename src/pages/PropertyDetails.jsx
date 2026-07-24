@@ -27,7 +27,10 @@ export default function PropertyDetails() {
     setPropertyDetails((prev) => ({ ...prev, [field]: value }))
   }
 
-  const formComplete = REQUIRED_FIELDS.every((field) => String(propertyDetails[field]).trim())
+  const formComplete =
+    REQUIRED_FIELDS.every((field) => String(propertyDetails[field]).trim()) &&
+    /^\d+$/.test(propertyDetails.yearBuilt.trim()) &&
+    /^\d+$/.test(propertyDetails.nStories.trim())
 
   async function handleNext() {
     if (!formComplete) return
@@ -35,32 +38,36 @@ export default function PropertyDetails() {
     setError('')
     setSubmitting(true)
 
-    const { data, error: submitError } = await supabase
-      .from('submissions')
-      .insert({
-        street_address: propertyDetails.streetAddress,
-        city: propertyDetails.city,
-        province: propertyDetails.province,
-        postal_code: propertyDetails.postalCode,
-        property_type: propertyDetails.propertyType,
-        year_built: propertyDetails.yearBuilt ? Number(propertyDetails.yearBuilt) : null,
-        n_stories: propertyDetails.nStories ? Number(propertyDetails.nStories) : null,
-        construction_type: propertyDetails.constructionType,
-        roof_type: propertyDetails.roofType,
-        currently_lived_in: propertyDetails.livesHere === 'yes',
-      })
-      .select('id, street_address, city, created_at')
-      .single()
+    try {
+      const { data, error: submitError } = await supabase
+        .from('submissions')
+        .insert({
+          street_address: propertyDetails.streetAddress,
+          city: propertyDetails.city,
+          province: propertyDetails.province,
+          postal_code: propertyDetails.postalCode,
+          property_type: propertyDetails.propertyType,
+          year_built: propertyDetails.yearBuilt ? Number(propertyDetails.yearBuilt) : null,
+          n_stories: propertyDetails.nStories ? Number(propertyDetails.nStories) : null,
+          construction_type: propertyDetails.constructionType,
+          roof_type: propertyDetails.roofType,
+          currently_lived_in: propertyDetails.livesHere === 'yes',
+        })
+        .select('id, street_address, city, created_at')
+        .single()
 
-    setSubmitting(false)
+      if (submitError) {
+        setError(submitError.message)
+        return
+      }
 
-    if (submitError) {
-      setError(submitError.message)
-      return
+      addProperty(data)
+      navigate('/documents')
+    } catch (err) {
+      setError(err.message || 'Something went wrong. Please try again.')
+    } finally {
+      setSubmitting(false)
     }
-
-    addProperty(data)
-    navigate('/documents')
   }
 
   return (
@@ -122,6 +129,7 @@ export default function PropertyDetails() {
           <label>Year Built</label>
           <input
             type="text"
+            inputMode="numeric"
             value={propertyDetails.yearBuilt}
             onChange={(e) => update('yearBuilt', e.target.value)}
           />

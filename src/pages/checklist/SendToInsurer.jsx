@@ -61,7 +61,7 @@ export default function SendToInsurer() {
         type="button"
         className="btn btn-primary"
         style={{ width: '100%', flex: 'none' }}
-        onClick={() => navigate('/checklist/done')}
+        onClick={() => navigate('/checklist/done', { state: { sent: true } })}
       >
         Send report
       </button>

@@ -94,6 +94,7 @@ export default function MarkItemComplete() {
         className="btn btn-primary"
         style={{ width: '100%', flex: 'none' }}
         onClick={handleSubmit}
+        disabled={!markedDone && !photo}
       >
         Submit for AI review
       </button>
