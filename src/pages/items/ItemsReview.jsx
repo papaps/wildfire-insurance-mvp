@@ -30,7 +30,9 @@ export default function ItemsReview() {
                 {count} {count === 1 ? 'item' : 'items'} detected
               </span>
             </div>
-            <span className="status-icon done">✓</span>
+            <span className={`status-icon${count > 0 ? ' done' : ''}`}>
+              {count > 0 ? '✓' : ''}
+            </span>
           </button>
         )
       })}
