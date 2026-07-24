@@ -96,10 +96,12 @@ export default function MarkItemComplete() {
         onClick={handleSubmit}
         disabled={!markedDone && !photo}
       >
-        Submit for AI review
+        {markedDone ? 'Mark as done' : 'Submit for AI review'}
       </button>
       <div className="section-subtitle" style={{ textAlign: 'center' }}>
-        AI checks your photo before this item is marked complete.
+        {markedDone
+          ? "You're marking this done yourself — no AI review needed."
+          : 'AI checks your photo before this item is marked complete.'}
       </div>
     </PhoneFrame>
   )
