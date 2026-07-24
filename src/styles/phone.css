@@ -432,6 +432,12 @@
   white-space: nowrap;
 }
 
+.status-pill-off {
+  background: none;
+  color: var(--teal-muted-light);
+  border: 1px dashed var(--teal-wash);
+}
+
 .footer-nav-wrap {
   margin-top: auto;
   padding-top: 16px;

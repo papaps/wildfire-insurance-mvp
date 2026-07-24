@@ -24,21 +24,21 @@ export default function SendToInsurer() {
         <div className="list-row-main">
           <span className="list-row-label">Risk score &amp; summary</span>
         </div>
-        <span className="btn-outline" style={{ cursor: 'default' }}>Sending</span>
+        <span className="status-pill">Sending</span>
       </div>
 
       <div className="list-row" style={{ cursor: 'default' }}>
         <div className="list-row-main">
           <span className="list-row-label">Completed fixes</span>
         </div>
-        <span className="btn-outline" style={{ cursor: 'default' }}>Sending</span>
+        <span className="status-pill">Sending</span>
       </div>
 
       <div className="list-row" style={{ cursor: 'default' }}>
         <div className="list-row-main">
           <span className="list-row-label">Photos</span>
         </div>
-        <span className="btn-outline" style={{ cursor: 'default' }}>
+        <span className={`status-pill${reportInclusions.photos ? '' : ' status-pill-off'}`}>
           {reportInclusions.photos ? 'Sending' : 'Removed'}
         </span>
       </div>
@@ -47,7 +47,7 @@ export default function SendToInsurer() {
         <div className="list-row-main">
           <span className="list-row-label">Receipts</span>
         </div>
-        <span className="btn-outline" style={{ cursor: 'default' }}>
+        <span className={`status-pill${reportInclusions.receipts ? '' : ' status-pill-off'}`}>
           {reportInclusions.receipts ? 'Sending' : 'Removed'}
         </span>
       </div>
