@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 import { useFlow } from '../context/FlowContext'
 import TabBar from '../components/TabBar'
 import { EllipsisVertical, Plus, Trash2 } from '../components/WildfireIcons'
@@ -7,8 +8,16 @@ import houseImg from '../assets/house.png'
 
 export default function Home() {
   const navigate = useNavigate()
+  const { user } = useAuth()
   const { properties, removeProperty } = useFlow()
   const [openMenuId, setOpenMenuId] = useState(null)
+
+  // Greet the signed-in user by first name. Prefer the stored first_name, then
+  // fall back to a full name field; take only the first word if multiple are
+  // present. If nothing is available, greet without a name.
+  const meta = user?.user_metadata ?? {}
+  const rawName = meta.first_name || meta.full_name || meta.name || ''
+  const firstName = rawName.trim().split(/\s+/)[0]
 
   async function handleDelete(id) {
     setOpenMenuId(null)
@@ -22,7 +31,7 @@ export default function Home() {
   return (
     <div className="wf-screen">
       <header className="wf-page-header">
-        <h1 className="wf-welcome">Welcome, [user]</h1>
+        <h1 className="wf-welcome">{firstName ? `Welcome, ${firstName}` : 'Welcome'}</h1>
       </header>
 
       <div className="wf-content">

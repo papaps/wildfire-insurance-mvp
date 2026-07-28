@@ -24,6 +24,21 @@ export default function YourReport() {
     { key: 'receipts', label: 'Receipts (2)', sub: 'Contractor Invoices' },
   ]
 
+  // The generated report/PDF always contains the required sections, plus any
+  // optional sections the user chose to include. Required sections can never be
+  // toggled out.
+  const includedSections = [
+    'Risk score & summary',
+    `Completed fixes (${completedCount})`,
+    ...toggleRows.filter((row) => reportInclusions[row.key]).map((row) => row.label),
+  ]
+
+  function handleDownloadPdf() {
+    alert(
+      `This is a mockup — PDF export is not implemented.\n\nYour report would include:\n• ${includedSections.join('\n• ')}`
+    )
+  }
+
   return (
     <div className="wf-screen wf-flow">
       <div className="wf-flow-top">
@@ -111,7 +126,7 @@ export default function YourReport() {
         <button
           type="button"
           className="wf-textbtn"
-          onClick={() => alert('This is a mockup — PDF export is not implemented.')}
+          onClick={handleDownloadPdf}
         >
           Download PDF
         </button>

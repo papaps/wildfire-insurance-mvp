@@ -2,32 +2,24 @@
 // Strokes use `currentColor` so color is driven by CSS `color`.
 // Multi-color marks (camera, selected tab glyphs) take an explicit fill.
 
-// Stylised placeholder brand marks for the prototype insurer list — simple
-// coloured emblems keyed by `INSURERS[].logo`, not real logo artwork.
-export function InsurerLogo({ id, size = 30 }) {
-  if (id === 'pci') {
-    return (
-      <svg width={size} height={(size * 22) / 30} viewBox="0 0 30 22" fill="none" aria-hidden="true">
-        <rect width="30" height="22" rx="3" fill="#0A3D91" />
-        <text x="15" y="15" textAnchor="middle" fontFamily="Georgia, serif" fontSize="10" fontWeight="700" fontStyle="italic" fill="#fff">PCI</text>
-      </svg>
-    )
-  }
-  if (id === 'bcm') {
-    return (
-      <svg width={size} height={(size * 26) / 30} viewBox="0 0 30 26" fill="none" aria-hidden="true">
-        <path d="M15 1L27 13L15 25L3 13L15 1Z" fill="#5B6670" />
-        <path d="M15 5.5L22.5 13L15 20.5L7.5 13L15 5.5Z" fill="#3E8FD6" />
-      </svg>
-    )
-  }
-  // BCAA
-  return (
-    <svg width={size} height={(size * 16) / 30} viewBox="0 0 30 16" fill="none" aria-hidden="true">
-      <rect width="30" height="16" rx="2" fill="#0033A0" />
-      <text x="15" y="11.5" textAnchor="middle" fontFamily="Arial, sans-serif" fontSize="8" fontWeight="700" fill="#fff">BCAA</text>
-    </svg>
-  )
+import insurerPci from '../assets/insurer-pci.png'
+import insurerBcaa from '../assets/insurer-bcaa.png'
+import insurerBcMutualHome from '../assets/insurer-bc-mutual-home.png'
+
+// Real insurer brand marks, keyed by `INSURERS[].logo`. Each file is matched to
+// its insurer by name (PCI.png → Pacific Coast, BCAA.png → BCAA, BC Home
+// Insurance.png → BC Mutual Home). Images render inside a fixed-height box and
+// keep their aspect ratio (object-fit: contain) so nothing stretches.
+const INSURER_LOGOS = {
+  pci: insurerPci,
+  bcaa: insurerBcaa,
+  bcm: insurerBcMutualHome,
+}
+
+export function InsurerLogo({ id, name }) {
+  const src = INSURER_LOGOS[id]
+  if (!src) return null
+  return <img className="wf-insurer-logo-img" src={src} alt={name ? `${name} logo` : ''} />
 }
 
 export function ChevronLeft({ size = 20, ...props }) {

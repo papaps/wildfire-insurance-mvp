@@ -1987,12 +1987,14 @@
   color: #6b6b6b;
 }
 
-/* Non-interactive "Included" status pill (required sections). */
+/* Non-interactive "Included" status label (required sections). Plain status
+   text — no background, border, or button affordance. Padding is kept only so
+   the label lines up vertically with the toggle buttons on the other rows. */
 .wf-incl-pill {
   flex-shrink: 0;
   padding: 10px 12px;
-  border-radius: 6px;
-  background: rgba(0, 64, 64, 0.15);
+  background: none;
+  border: none;
   font-family: var(--wf-sans);
   font-size: 12px;
   font-weight: 500;
@@ -2126,8 +2128,21 @@
 
 .wf-insurer-logo {
   display: inline-flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
+  width: 48px;
+  height: 32px;
   line-height: 0;
+}
+
+/* Real logo images: fill the box while preserving aspect ratio (no stretch). */
+.wf-insurer-logo-img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
 }
 
 .wf-insurer-main {

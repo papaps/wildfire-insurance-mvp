@@ -49,7 +49,7 @@ export default function FireSmartInsurers() {
           {INSURERS.map((ins) => (
             <div key={ins.id} className="wf-insurer-card">
               <span className="wf-insurer-logo">
-                <InsurerLogo id={ins.logo} />
+                <InsurerLogo id={ins.logo} name={ins.label} />
               </span>
               <div className="wf-insurer-main">
                 <span className="wf-insurer-name">{ins.label}</span>
