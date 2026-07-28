@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import PhoneFrame from '../../components/PhoneFrame'
 import { useFlow } from '../../context/FlowContext'
+import { ChevronLeft, Camera, Mic, ImageIcon } from '../../components/WildfireIcons'
 
 export default function Chat() {
   const navigate = useNavigate()
@@ -28,13 +28,25 @@ export default function Chat() {
   }
 
   return (
-    <PhoneFrame title="Chat" onBack={() => navigate('/')}>
-      <div className="chat-messages">
+    <div className="wf-screen">
+      <header className="wf-topbar">
+        <button
+          type="button"
+          className="wf-iconbtn"
+          aria-label="Back"
+          onClick={() => navigate('/')}
+        >
+          <ChevronLeft size={20} />
+        </button>
+        <span className="wf-topbar-title">Chat</span>
+      </header>
+
+      <div className="wf-chat-messages">
         {chatMessages.map((msg) => (
           <div
             key={msg.id}
-            className={`chat-bubble ${
-              msg.from === 'user' ? 'chat-bubble-user' : 'chat-bubble-assistant'
+            className={`wf-bubble ${
+              msg.from === 'user' ? 'wf-bubble-user' : 'wf-bubble-assistant'
             }`}
           >
             {msg.text}
@@ -43,19 +55,29 @@ export default function Chat() {
         <div ref={bottomRef} />
       </div>
 
-      <div className="chat-input-row">
+      <div className="wf-chat-inputbar">
+        <button type="button" className="wf-cam-btn" aria-label="Camera">
+          <Camera size={20} />
+        </button>
         <input
+          className="wf-chat-input"
           value={draft}
           onChange={(e) => setDraft(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === 'Enter') handleSend()
           }}
-          placeholder="Type a message..."
+          placeholder="Message..."
+          aria-label="Message"
         />
-        <button className="btn btn-primary" type="button" onClick={handleSend}>
-          Send
-        </button>
+        <div className="wf-chat-actions">
+          <button type="button" className="wf-iconbtn" aria-label="Voice message">
+            <Mic size={20} />
+          </button>
+          <button type="button" className="wf-iconbtn" aria-label="Add image">
+            <ImageIcon size={20} />
+          </button>
+        </div>
       </div>
-    </PhoneFrame>
+    </div>
   )
 }
