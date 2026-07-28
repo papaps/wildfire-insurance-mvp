@@ -1,22 +1,19 @@
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import PhoneFrame from '../../components/PhoneFrame'
+import WildfireLoader from '../../components/WildfireLoader'
 
 export default function ItemsIdentifying() {
   const navigate = useNavigate()
 
   useEffect(() => {
-    const timer = setTimeout(() => navigate('/items/review'), 1800)
+    const timer = setTimeout(() => navigate('/items/review'), 2600)
     return () => clearTimeout(timer)
   }, [navigate])
 
   return (
-    <PhoneFrame showBack={false}>
-      <div className="center-screen">
-        <div className="spinner" />
-        <div className="section-title">Identifying items in your photos...</div>
-        <div className="section-subtitle">This may take a few moments.</div>
-      </div>
-    </PhoneFrame>
+    <WildfireLoader
+      title="Identifying items in your photos"
+      subtitle="This helps us find features that may affect wildfire risk."
+    />
   )
 }

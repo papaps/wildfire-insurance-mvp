@@ -92,6 +92,41 @@ export function Camera({ size = 20, ...props }) {
   )
 }
 
+export function CameraOutline({ size = 20, ...props }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 20 20" fill="none" {...props}>
+      <path d="M12.0834 3.33325H7.91669L5.83335 5.83325H3.33335C2.89133 5.83325 2.4674 6.00885 2.15484 6.32141C1.84228 6.63397 1.66669 7.05789 1.66669 7.49992V14.9999C1.66669 15.4419 1.84228 15.8659 2.15484 16.1784C2.4674 16.491 2.89133 16.6666 3.33335 16.6666H16.6667C17.1087 16.6666 17.5326 16.491 17.8452 16.1784C18.1578 15.8659 18.3334 15.4419 18.3334 14.9999V7.49992C18.3334 7.05789 18.1578 6.63397 17.8452 6.32141C17.5326 6.00885 17.1087 5.83325 16.6667 5.83325H14.1667L12.0834 3.33325Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M10 13.3333C11.3807 13.3333 12.5 12.214 12.5 10.8333C12.5 9.45254 11.3807 8.33325 10 8.33325C8.61931 8.33325 7.50002 9.45254 7.50002 10.8333C7.50002 12.214 8.61931 13.3333 10 13.3333Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}
+
+export function XMark({ size = 20, ...props }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 20 20" fill="none" {...props}>
+      <path d="M15 5L5 15M5 5L15 15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}
+
+export function PenEdit({ size = 18, ...props }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 18 18" fill="none" {...props}>
+      <path d="M15.8805 5.10904C16.277 4.71261 16.4998 4.17489 16.4999 3.61418C16.4999 3.05347 16.2773 2.5157 15.8808 2.11917C15.4844 1.72263 14.9467 1.49983 14.386 1.49976C13.8253 1.49969 13.2875 1.72236 12.8909 2.11879L2.88145 12.1305C2.70732 12.3042 2.57854 12.5179 2.50645 12.753L1.5157 16.017C1.49632 16.0819 1.49485 16.1508 1.51146 16.2164C1.52807 16.2821 1.56214 16.342 1.61005 16.3898C1.65796 16.4376 1.71792 16.4716 1.78357 16.4881C1.84922 16.5046 1.91812 16.503 1.98295 16.4835L5.2477 15.4935C5.48258 15.4221 5.69633 15.2941 5.8702 15.1208L15.8805 5.10904Z" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}
+
+// Large filled check in a coral disc — used on the confirm bottom sheet.
+export function CheckCircleLarge({ size = 70, ...props }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 70 70" fill="none" {...props}>
+      <circle cx="35" cy="35" r="28" fill="#DE7356" />
+      <path d="M24 35.5L31 42.5L46 26" stroke="white" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}
+
 export function Mic({ size = 20, ...props }) {
   return (
     <svg width={size} height={size} viewBox="0 0 20 20" fill="none" {...props}>

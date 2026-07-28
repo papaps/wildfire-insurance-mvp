@@ -12,9 +12,6 @@ import DocumentsList from './pages/documents/DocumentsList'
 import DocumentsThankYou from './pages/documents/DocumentsThankYou'
 
 import PhotosList from './pages/photos/PhotosList'
-import PhotoCamera from './pages/photos/PhotoCamera'
-import PhotoPreview from './pages/photos/PhotoPreview'
-import PhotosValidating from './pages/photos/PhotosValidating'
 
 import ItemsIdentifying from './pages/items/ItemsIdentifying'
 import ItemsReview from './pages/items/ItemsReview'
@@ -62,10 +59,7 @@ function AppRoutes() {
       <Route path="/documents/thank-you" element={<RequireAuth><DocumentsThankYou /></RequireAuth>} />
 
       <Route path="/photos" element={<RequireAuth><PhotosList /></RequireAuth>} />
-      <Route path="/photos/validating" element={<RequireAuth><PhotosValidating /></RequireAuth>} />
       <Route path="/photos/:categoryId" element={<RequireAuth><PhotosList /></RequireAuth>} />
-      <Route path="/photos/:categoryId/camera" element={<RequireAuth><PhotoCamera /></RequireAuth>} />
-      <Route path="/photos/:categoryId/preview" element={<RequireAuth><PhotoPreview /></RequireAuth>} />
 
       <Route path="/items/identifying" element={<RequireAuth><ItemsIdentifying /></RequireAuth>} />
       <Route path="/items/review" element={<RequireAuth><ItemsReview /></RequireAuth>} />

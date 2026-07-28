@@ -1,95 +1,129 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import PhoneFrame from '../../components/PhoneFrame'
-import FooterNav from '../../components/FooterNav'
+import { ChevronDown, Upload, CameraOutline, CheckCircle, XMark } from '../../components/WildfireIcons'
 import { useFlow, PHOTO_CATEGORIES } from '../../context/FlowContext'
+import grass from '../../assets/grass.png'
+
+function PhotoCard({ cat, previews, isExpanded, onToggle, onUpload, onTakePhoto, onRemove }) {
+  const hasPhotos = previews.length > 0
+
+  return (
+    <div className={`wf-doc-card${isExpanded ? ' wf-doc-card-open' : ''}`}>
+      <button type="button" className="wf-doc-header" onClick={onToggle} aria-expanded={isExpanded}>
+        <span className="wf-doc-title">{cat.label}</span>
+        <span className="wf-doc-header-right">
+          {hasPhotos && <CheckCircle size={20} />}
+          <span className={`wf-doc-chevron${isExpanded ? ' wf-doc-chevron-open' : ''}`}>
+            <ChevronDown size={16} />
+          </span>
+        </span>
+      </button>
+
+      <div className="wf-doc-collapse">
+        <div className="wf-doc-collapse-inner">
+          <div className="wf-doc-divider" />
+          <div className="wf-doc-body">
+            <p className="wf-doc-question">{cat.description}</p>
+
+            {hasPhotos && (
+              <div className="wf-photo-strip">
+                {previews.map((id) => (
+                  <div key={id} className="wf-photo-thumb">
+                    <img src={grass} alt="" />
+                    <button
+                      type="button"
+                      className="wf-photo-thumb-remove"
+                      onClick={() => onRemove(id)}
+                      aria-label="Remove photo"
+                    >
+                      <XMark size={12} />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <div className="wf-photo-actions">
+              <button type="button" className="wf-photo-upload" onClick={onUpload}>
+                <Upload size={20} />
+                Upload Files
+              </button>
+              <button type="button" className="wf-photo-take" onClick={onTakePhoto}>
+                <CameraOutline size={20} />
+                Take Photo
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
 
 export default function PhotosList() {
   const navigate = useNavigate()
   const { categoryId } = useParams()
-  const { photos, addPhoto } = useFlow()
+  const { photos, addPhotos, removePhoto } = useFlow()
   const [expandedId, setExpandedId] = useState(categoryId ?? null)
+  const contentRef = useRef(null)
 
-  // Coming back from the camera/preview flow lands on /photos/:categoryId —
-  // keep that category expanded instead of collapsing back to the bare list.
+  // Returning from a detected-item tap lands on /photos/:categoryId — expand
+  // that card and scroll it into view instead of collapsing to the bare list.
   useEffect(() => {
-    if (categoryId) setExpandedId(categoryId)
+    if (!categoryId) return
+    setExpandedId(categoryId)
+    const el = contentRef.current?.querySelector(`[data-card="${categoryId}"]`)
+    el?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }, [categoryId])
 
   function toggle(id) {
     setExpandedId((current) => (current === id ? null : id))
   }
 
-  function handleUploadFiles(id) {
-    addPhoto(id)
-  }
-
-  const requiredComplete = PHOTO_CATEGORIES.filter((cat) => !cat.optional).every(
-    (cat) => (photos[cat.id]?.count ?? 0) > 0
+  const requiredComplete = PHOTO_CATEGORIES.filter((c) => !c.optional).every(
+    (c) => (photos[c.id]?.previews?.length ?? 0) > 0
   )
 
   return (
-    <PhoneFrame title="Upload Photos" onBack={() => navigate('/documents/thank-you')}>
-      <div className="section-title">Upload Photos</div>
-      <div className="section-subtitle">
-        Add photos for each category below to help us assess your property's wildfire risk.
+    <div className="wf-screen wf-flow">
+      <div className="wf-flow-content" ref={contentRef}>
+        <div className="wf-flow-heading">
+          <h1 className="wf-flow-title">Property Photos</h1>
+          <p className="wf-flow-subtitle">
+            Add photos of each area to help assess your property's wildfire risk.
+          </p>
+        </div>
+
+        <div className="wf-doc-list">
+          {PHOTO_CATEGORIES.map((cat) => (
+            <div key={cat.id} data-card={cat.id}>
+              <PhotoCard
+                cat={cat}
+                previews={photos[cat.id]?.previews ?? []}
+                isExpanded={expandedId === cat.id}
+                onToggle={() => toggle(cat.id)}
+                onUpload={() => addPhotos(cat.id, 5)}
+                onTakePhoto={() => addPhotos(cat.id, 1)}
+                onRemove={(id) => removePhoto(cat.id, id)}
+              />
+            </div>
+          ))}
+        </div>
       </div>
 
-      {PHOTO_CATEGORIES.map((cat) => {
-        const count = photos[cat.id]?.count ?? 0
-        const isExpanded = expandedId === cat.id
-
-        return (
-          <div key={cat.id} className="doc-item">
-            <button type="button" className="doc-item-header" onClick={() => toggle(cat.id)}>
-              <div className="doc-item-title">
-                <span className="list-row-label">{cat.label}</span>
-                {!isExpanded && (
-                  <span className="doc-item-status">
-                    {count > 0 ? `${count} photo(s) uploaded` : cat.description}
-                  </span>
-                )}
-              </div>
-              <span className={`status-icon${count > 0 ? ' done' : ''}`}>
-                {count > 0 ? '✓' : ''}
-              </span>
-            </button>
-
-            {isExpanded && (
-              <div className="doc-item-body">
-                <p className="section-subtitle" style={{ margin: '0 0 12px' }}>
-                  {cat.description}
-                </p>
-                <div className="upload-box">
-                  <span>{count > 0 ? `${count} photo(s) uploaded` : 'No photos uploaded yet'}</span>
-                  <div className="upload-actions">
-                    <button
-                      className="btn-outline"
-                      type="button"
-                      onClick={() => handleUploadFiles(cat.id)}
-                    >
-                      Upload Files
-                    </button>
-                    <button
-                      className="btn-outline"
-                      type="button"
-                      onClick={() => navigate(`/photos/${cat.id}/camera`)}
-                    >
-                      Take Photo
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-        )
-      })}
-
-      <FooterNav
-        onBack={() => navigate('/documents/thank-you')}
-        onNext={() => navigate('/photos/validating')}
-        nextDisabled={!requiredComplete}
-      />
-    </PhoneFrame>
+      <div className="wf-flow-footer">
+        <button type="button" className="wf-textbtn" onClick={() => navigate('/documents/thank-you')}>
+          Cancel
+        </button>
+        <button
+          type="button"
+          className="wf-nextbtn"
+          disabled={!requiredComplete}
+          onClick={() => navigate('/items/identifying')}
+        >
+          Next
+        </button>
+      </div>
+    </div>
   )
 }

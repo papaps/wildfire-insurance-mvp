@@ -40,9 +40,17 @@ const initialDocuments = Object.fromEntries(
   DOCUMENT_TYPES.map((d) => [d.id, { answered: false, hasIt: null, uploaded: false, fileName: null }])
 )
 
+// Each category tracks an array of simulated preview ids. The actual image is
+// always the same bundled grass photo — ids only need to be unique so previews
+// can be removed individually.
 const initialPhotos = Object.fromEntries(
-  PHOTO_CATEGORIES.map((c) => [c.id, { count: 0 }])
+  PHOTO_CATEGORIES.map((c) => [c.id, { previews: [] }])
 )
+
+let previewSeq = 0
+function makePreviews(categoryId, n) {
+  return Array.from({ length: n }, () => `${categoryId}-${(previewSeq += 1)}`)
+}
 
 // Wildfire mitigation checklist shown in the post-report "hazard report" flow.
 export const HAZARD_RISK_SCORE = 8.6
@@ -78,6 +86,7 @@ const initialIdentifiedItems = {
   roof: [
     { id: 'roof-1', label: 'Roof Vent' },
     { id: 'roof-2', label: 'Gutter' },
+    { id: 'roof-3', label: 'Chimney' },
   ],
   deck: [{ id: 'deck-1', label: 'Wood Deck' }],
   flammable: [{ id: 'flam-1', label: 'Propane Tank' }],
@@ -145,10 +154,19 @@ export function FlowProvider({ children }) {
     setDocuments((prev) => ({ ...prev, [id]: { ...prev[id], ...patch } }))
   }
 
-  function addPhoto(categoryId) {
+  // Simulated upload — treats the action as successful and appends `n` grass
+  // previews to the category instead of requiring a real file/camera.
+  function addPhotos(categoryId, n = 5) {
     setPhotos((prev) => ({
       ...prev,
-      [categoryId]: { count: (prev[categoryId]?.count ?? 0) + 1 },
+      [categoryId]: { previews: [...(prev[categoryId]?.previews ?? []), ...makePreviews(categoryId, n)] },
+    }))
+  }
+
+  function removePhoto(categoryId, previewId) {
+    setPhotos((prev) => ({
+      ...prev,
+      [categoryId]: { previews: (prev[categoryId]?.previews ?? []).filter((id) => id !== previewId) },
     }))
   }
 
@@ -159,6 +177,21 @@ export function FlowProvider({ children }) {
         item.id === itemId ? { ...item, label: newLabel } : item
       ),
     }))
+  }
+
+  function removeIdentifiedItem(categoryId, itemId) {
+    setIdentifiedItems((prev) => ({
+      ...prev,
+      [categoryId]: (prev[categoryId] ?? []).filter((item) => item.id !== itemId),
+    }))
+  }
+
+  function addIdentifiedItem(categoryId) {
+    setIdentifiedItems((prev) => {
+      const existing = prev[categoryId] ?? []
+      const item = { id: `${categoryId}-${(previewSeq += 1)}`, label: 'New Item' }
+      return { ...prev, [categoryId]: [...existing, item] }
+    })
   }
 
   function addChatMessage(from, text) {
@@ -198,9 +231,12 @@ export function FlowProvider({ children }) {
     documents,
     updateDocument,
     photos,
-    addPhoto,
+    addPhotos,
+    removePhoto,
     identifiedItems,
     renameIdentifiedItem,
+    removeIdentifiedItem,
+    addIdentifiedItem,
     chatMessages,
     addChatMessage,
     checklistProgress,
