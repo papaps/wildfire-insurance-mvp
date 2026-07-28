@@ -1890,3 +1890,294 @@
 .wf-plan-close:hover {
   background: none;
 }
+
+/* =====================================================================
+   Insurance Report flow — Report, Question, Details, View Insurers, Done.
+   Shares the .wf-flow shell (pinned nav/title, scroll body, sticky footer).
+   ===================================================================== */
+
+/* --- Header nav row (back + close) --- */
+.wf-flow-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.wf-flow-back {
+  color: var(--wf-teal);
+  margin-left: -2px;
+}
+
+.wf-flow-back:hover {
+  background: none;
+}
+
+/* Single full-width CTA footer. */
+.wf-flow-footer-single {
+  justify-content: center;
+}
+
+/* --- Insurance Report: property meta line --- */
+.wf-report-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  font-family: var(--wf-sans);
+  font-size: 12px;
+  color: var(--wf-teal);
+}
+
+/* Score card: label left, value right (distinct from the centered report score
+   on the Wildfire Risk Report). */
+.wf-report-score {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  padding: 10px 12px;
+}
+
+.wf-report-score-label {
+  font-family: var(--wf-serif);
+  font-size: 16px;
+  color: var(--wf-teal);
+}
+
+/* --- Report sections (toggleable include/exclude) --- */
+.wf-report-sections {
+  display: flex;
+  flex-direction: column;
+}
+
+.wf-report-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 4px 0;
+}
+
+.wf-report-divider {
+  height: 1px;
+  background: rgba(0, 64, 64, 0.2);
+  margin: 8px 0;
+}
+
+.wf-report-main {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  transition: opacity 0.15s ease;
+}
+
+.wf-report-row.is-excluded .wf-report-main {
+  opacity: 0.4;
+}
+
+.wf-report-label {
+  font-family: var(--wf-sans);
+  font-size: 14px;
+  color: var(--wf-teal);
+}
+
+.wf-report-sub {
+  font-family: var(--wf-sans);
+  font-size: 11px;
+  color: #6b6b6b;
+}
+
+/* Non-interactive "Included" status pill (required sections). */
+.wf-incl-pill {
+  flex-shrink: 0;
+  padding: 10px 12px;
+  border-radius: 6px;
+  background: rgba(0, 64, 64, 0.15);
+  font-family: var(--wf-sans);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--wf-teal);
+  line-height: 1;
+}
+
+/* Outlined toggle button (Exclude/Include) + View Insurers "Get Quote". */
+.wf-toggle-btn {
+  flex-shrink: 0;
+  min-width: 75px;
+  padding: 10px 12px;
+  border: 1px solid rgba(0, 64, 64, 0.15);
+  border-radius: 6px;
+  background: none;
+  font-family: var(--wf-sans);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--wf-teal);
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.wf-toggle-btn:hover {
+  background: var(--wf-teal-06);
+}
+
+.wf-toggle-btn.is-excluded {
+  background: rgba(0, 64, 64, 0.15);
+  border-color: transparent;
+}
+
+/* --- Insurance Report footer (caption + CTA + text link) --- */
+.wf-report-footer {
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+}
+
+.wf-report-caption {
+  margin: 0;
+  text-align: center;
+  font-family: var(--wf-sans);
+  font-size: 11px;
+  color: var(--wf-teal);
+  opacity: 0.6;
+}
+
+/* --- Insurance Question: choice cards --- */
+.wf-choice-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.wf-choice-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 14px 12px;
+  background: #fff;
+  border: 1px solid var(--wf-teal-15, rgba(0, 64, 64, 0.15));
+  border-radius: 10px;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.wf-choice-card:hover {
+  background: var(--wf-teal-06);
+}
+
+.wf-choice-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.wf-choice-label {
+  font-family: var(--wf-sans);
+  font-size: 14px;
+  color: var(--wf-teal);
+}
+
+.wf-choice-sub {
+  font-family: var(--wf-sans);
+  font-size: 11px;
+  color: #6b6b6b;
+}
+
+.wf-choice-chevron {
+  display: inline-flex;
+  flex-shrink: 0;
+  color: var(--wf-teal-60);
+}
+
+/* --- Insurance Details: label + optional row --- */
+.wf-field-labelrow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.wf-field-optional {
+  font-family: var(--wf-sans);
+  font-size: 11px;
+  color: #6b6b6b;
+}
+
+/* --- View Insurers: insurer cards --- */
+.wf-insurer-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.wf-insurer-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 14px 12px;
+  background: #fff;
+  border: 1px solid var(--wf-teal-15, rgba(0, 64, 64, 0.15));
+  border-radius: 10px;
+}
+
+.wf-insurer-logo {
+  display: inline-flex;
+  flex-shrink: 0;
+  line-height: 0;
+}
+
+.wf-insurer-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.wf-insurer-name {
+  font-family: var(--wf-sans);
+  font-size: 14px;
+  color: var(--wf-teal);
+}
+
+.wf-insurer-note {
+  font-family: var(--wf-sans);
+  font-size: 11px;
+  color: #6b6b6b;
+}
+
+/* --- Completion screens (Report sent / Report saved) --- */
+.wf-done {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 24px;
+  text-align: center;
+}
+
+.wf-done-title {
+  margin-top: 4px;
+}
+
+.wf-done-sub {
+  margin: 0;
+  max-width: 320px;
+  font-family: var(--wf-sans);
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--wf-teal);
+}
+
+.wf-done-footer {
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+}

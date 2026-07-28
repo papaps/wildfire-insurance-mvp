@@ -1,36 +1,61 @@
 import { useNavigate } from 'react-router-dom'
-import PhoneFrame from '../../components/PhoneFrame'
+import { ChevronLeft, XMark } from '../../components/WildfireIcons'
 
+// Insurance Question — branches the flow. "Yes" goes to Insurance Details,
+// "No" goes to the FireSmart-compatible insurer list. Each card is fully
+// clickable.
 export default function ShareReport() {
   const navigate = useNavigate()
 
   return (
-    <PhoneFrame title="Share your report" onBack={() => navigate('/checklist/report')}>
-      <div className="section-title">Do you have home insurance?</div>
-
-      <button
-        type="button"
-        className="list-row"
-        onClick={() => navigate('/checklist/report/insurer')}
-      >
-        <div className="list-row-main">
-          <span className="list-row-label">Yes, I have an insurer</span>
-          <span className="list-row-sub">Send your report for your next renewal or reassessment</span>
+    <div className="wf-screen wf-flow">
+      <div className="wf-flow-top">
+        <div className="wf-flow-nav">
+          <button type="button" className="wf-iconbtn wf-flow-back" onClick={() => navigate('/checklist/report')} aria-label="Back">
+            <ChevronLeft size={20} />
+          </button>
+          <button type="button" className="wf-iconbtn wf-plan-close" onClick={() => navigate('/')} aria-label="Close">
+            <XMark size={20} />
+          </button>
         </div>
-        <span className="chevron-icon">›</span>
-      </button>
-
-      <button
-        type="button"
-        className="list-row"
-        onClick={() => navigate('/checklist/share/browse')}
-      >
-        <div className="list-row-main">
-          <span className="list-row-label">No, or shopping around</span>
-          <span className="list-row-sub">See insurers that recognize FireSmart work</span>
+        <div className="wf-flow-heading">
+          <h1 className="wf-flow-title">Do you already have home insurance?</h1>
         </div>
-        <span className="chevron-icon">›</span>
-      </button>
-    </PhoneFrame>
+      </div>
+
+      <div className="wf-flow-content">
+        <div className="wf-choice-list">
+          <button
+            type="button"
+            className="wf-choice-card"
+            onClick={() => navigate('/checklist/report/insurer')}
+          >
+            <span className="wf-choice-main">
+              <span className="wf-choice-label">Yes, I have an insurer</span>
+              <span className="wf-choice-sub">
+                Share your report with your insurer at your next renewal or reassessment.
+              </span>
+            </span>
+            <span className="wf-choice-chevron">
+              <ChevronLeft size={16} style={{ transform: 'rotate(180deg)' }} />
+            </span>
+          </button>
+
+          <button
+            type="button"
+            className="wf-choice-card"
+            onClick={() => navigate('/checklist/share/browse')}
+          >
+            <span className="wf-choice-main">
+              <span className="wf-choice-label">No, I&rsquo;m shopping for insurance</span>
+              <span className="wf-choice-sub">See insurers that recognize FireSmart work.</span>
+            </span>
+            <span className="wf-choice-chevron">
+              <ChevronLeft size={16} style={{ transform: 'rotate(180deg)' }} />
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
   )
 }

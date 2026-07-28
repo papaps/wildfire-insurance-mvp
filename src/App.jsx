@@ -28,7 +28,6 @@ import YourReport from './pages/checklist/YourReport'
 import YourInsurer from './pages/checklist/YourInsurer'
 import ShareReport from './pages/checklist/ShareReport'
 import FireSmartInsurers from './pages/checklist/FireSmartInsurers'
-import SendToInsurer from './pages/checklist/SendToInsurer'
 import AllDone from './pages/checklist/AllDone'
 
 import Chat from './pages/chat/Chat'
@@ -76,7 +75,6 @@ function AppRoutes() {
       <Route path="/checklist/report/insurer" element={<RequireAuth><YourInsurer /></RequireAuth>} />
       <Route path="/checklist/share" element={<RequireAuth><ShareReport /></RequireAuth>} />
       <Route path="/checklist/share/browse" element={<RequireAuth><FireSmartInsurers /></RequireAuth>} />
-      <Route path="/checklist/send" element={<RequireAuth><SendToInsurer /></RequireAuth>} />
       <Route path="/checklist/done" element={<RequireAuth><AllDone /></RequireAuth>} />
 
       <Route path="/chat" element={<RequireAuth><Chat /></RequireAuth>} />

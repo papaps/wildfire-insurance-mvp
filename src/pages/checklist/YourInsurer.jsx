@@ -1,92 +1,86 @@
-import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import PhoneFrame from '../../components/PhoneFrame'
+import { ChevronLeft, XMark } from '../../components/WildfireIcons'
 import { useFlow, INSURERS } from '../../context/FlowContext'
 
+// Insurance Details — reached from the "Yes, I have an insurer" branch. Insurer
+// is required (CTA stays disabled until one is picked); policy number is
+// optional. Selections persist in FlowContext across back navigation.
 export default function YourInsurer() {
   const navigate = useNavigate()
-  const { insurer, setInsurer } = useFlow()
-  const [search, setSearch] = useState('')
+  const { insurer, setInsurer, setReportStatus } = useFlow()
 
-  const filteredInsurers = INSURERS.filter((i) =>
-    i.label.toLowerCase().includes(search.toLowerCase())
-  )
+  const canSend = Boolean(insurer.insurerId)
+
+  function handleSend() {
+    if (!canSend) return
+    setReportStatus({ saved: true, sent: true, sentToId: insurer.insurerId })
+    navigate('/checklist/done')
+  }
 
   return (
-    <PhoneFrame title="Your insurer" onBack={() => navigate('/checklist/share')}>
-      <div className="section-title">Who insures your home?</div>
-
-      <div className="field">
-        <input
-          type="text"
-          placeholder="Search insurers"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
+    <div className="wf-screen wf-flow">
+      <div className="wf-flow-top">
+        <div className="wf-flow-nav">
+          <button type="button" className="wf-iconbtn wf-flow-back" onClick={() => navigate('/checklist/share')} aria-label="Back">
+            <ChevronLeft size={20} />
+          </button>
+          <button type="button" className="wf-iconbtn wf-plan-close" onClick={() => navigate('/')} aria-label="Close">
+            <XMark size={20} />
+          </button>
+        </div>
+        <div className="wf-flow-heading">
+          <h1 className="wf-flow-title">Insurance Details</h1>
+          <p className="wf-flow-subtitle">Enter your insurance details to send your wildfire report</p>
+        </div>
       </div>
 
-      <div className="radio-row" style={{ flexDirection: 'column', gap: 0 }}>
-        {filteredInsurers.length === 0 ? (
-          <p className="section-subtitle" style={{ margin: '4px 0 8px' }}>
-            No insurers match "{search}". Try a different name, or choose "My insurer isn't
-            listed" below.
-          </p>
-        ) : (
-          filteredInsurers.map((i) => (
-            <label key={i.id} className="list-row" style={{ cursor: 'pointer' }}>
-              <div className="list-row-main">
-                <span className="list-row-label">{i.label}</span>
-                <span className="list-row-sub">{i.firesmartNote}</span>
-              </div>
-              <input
-                type="radio"
-                name="insurer"
-                checked={insurer.insurerId === i.id}
-                onChange={() => setInsurer({ insurerId: i.id })}
-              />
-            </label>
-          ))
-        )}
+      <div className="wf-flow-content">
+        <div className="wf-form">
+          <div className="wf-field">
+            <label htmlFor="insurer-select">Insurer</label>
+            <div className="wf-select-wrap">
+              <select
+                id="insurer-select"
+                className="wf-select"
+                data-empty={insurer.insurerId ? undefined : true}
+                value={insurer.insurerId}
+                onChange={(e) => setInsurer({ insurerId: e.target.value })}
+              >
+                <option value="" disabled>Select Insurer</option>
+                {INSURERS.map((i) => (
+                  <option key={i.id} value={i.id}>{i.label}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          <div className="wf-field">
+            <div className="wf-field-labelrow">
+              <label htmlFor="policy-input">Policy No.</label>
+              <span className="wf-field-optional">(Optional)</span>
+            </div>
+            <input
+              id="policy-input"
+              className="wf-input"
+              type="text"
+              placeholder="AB -1234-5678"
+              value={insurer.policyNumber}
+              onChange={(e) => setInsurer({ policyNumber: e.target.value })}
+            />
+          </div>
+        </div>
       </div>
 
-      <div className="field">
-        <label>Policy number (optional)</label>
-        <input
-          type="text"
-          value={insurer.policyNumber}
-          onChange={(e) => setInsurer({ policyNumber: e.target.value })}
-        />
+      <div className="wf-flow-footer wf-flow-footer-single">
+        <button
+          type="button"
+          className="wf-nextbtn wf-nextbtn-full"
+          disabled={!canSend}
+          onClick={handleSend}
+        >
+          Send Report
+        </button>
       </div>
-
-      <p className="section-subtitle">
-        Nothing is sent yet — choosing your insurer just addresses the report. You'll review
-        exactly what's included before anything is shared.
-      </p>
-
-      <button
-        type="button"
-        className="btn btn-primary"
-        style={{ width: '100%', flex: 'none', marginBottom: 10 }}
-        onClick={() => navigate('/checklist/send')}
-      >
-        Review before sending
-      </button>
-      <button
-        type="button"
-        className="btn btn-secondary"
-        style={{ width: '100%', flex: 'none' }}
-        onClick={() => navigate('/checklist/done')}
-      >
-        Save my record for later
-      </button>
-
-      <div
-        className="help-link"
-        style={{ textAlign: 'center', width: '100%' }}
-        onClick={() => navigate('/checklist/share/browse')}
-      >
-        My insurer isn't listed
-      </div>
-    </PhoneFrame>
+    </div>
   )
 }

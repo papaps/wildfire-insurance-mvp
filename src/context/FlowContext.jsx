@@ -159,10 +159,31 @@ export function computeRiskScore(progress) {
   return Math.max(0, HAZARD_RISK_SCORE - drop)
 }
 
+// FireSmart-compatible insurers shown on the View Insurers screen and in the
+// Insurance Details dropdown. `logo` keys into the InsurerLogo component; `url`
+// is the external quote destination (null → simulated in this prototype).
 export const INSURERS = [
-  { id: 'pacific-coast', label: 'Pacific Coast Insurance', firesmartNote: 'Accepts FireSmart certificates · mitigation discount' },
-  { id: 'bc-mutual', label: 'BC Mutual Home', firesmartNote: 'Accepts mitigation reports at quote time' },
-  { id: 'interior-shield', label: 'Interior Shield Insurance', firesmartNote: 'Covers high-risk postal codes with verified fixes' },
+  {
+    id: 'pacific-coast',
+    label: 'Pacific Coast Insurance',
+    firesmartNote: 'Provides mitigation discounts',
+    logo: 'pci',
+    url: null,
+  },
+  {
+    id: 'bc-mutual',
+    label: 'BC Mutual Home',
+    firesmartNote: 'Accepts mitigation reports at quote time',
+    logo: 'bcm',
+    url: null,
+  },
+  {
+    id: 'bcaa',
+    label: 'BCAA Home Insurance',
+    firesmartNote: 'Covers high-risk postal codes with verified fixes',
+    logo: 'bcaa',
+    url: null,
+  },
 ]
 
 // Mock AI-detected items shown in the review screens.
@@ -216,7 +237,12 @@ export function FlowProvider({ children }) {
   // their previous state instead of snapping to the final value.
   const [planBaseline, setPlanBaseline] = useState({ doneIds: [] })
   const [reportInclusions, setReportInclusions] = useState({ photos: true, receipts: true })
-  const [insurer, setInsurerState] = useState({ insurerId: 'pacific-coast', policyNumber: 'HO-4482-1937' })
+  // Insurer starts empty so the Insurance Details CTA is disabled until a
+  // selection is made.
+  const [insurer, setInsurerState] = useState({ insurerId: '', policyNumber: '' })
+  // Lifecycle of the generated insurance report. `saved` flips as soon as the
+  // report screen is reached (auto-save); `sent` + `sentToId` capture a share.
+  const [reportStatus, setReportStatusState] = useState({ saved: false, sent: false, sentToId: null })
   const [properties, setProperties] = useState([])
 
   useEffect(() => {
@@ -352,6 +378,10 @@ export function FlowProvider({ children }) {
     setInsurerState((prev) => ({ ...prev, ...patch }))
   }
 
+  function setReportStatus(patch) {
+    setReportStatusState((prev) => ({ ...prev, ...patch }))
+  }
+
   function addProperty(row) {
     setProperties((prev) => [submissionToProperty(row), ...prev])
   }
@@ -393,6 +423,8 @@ export function FlowProvider({ children }) {
     toggleReportInclusion,
     insurer,
     setInsurer,
+    reportStatus,
+    setReportStatus,
     properties,
     addProperty,
     removeProperty,

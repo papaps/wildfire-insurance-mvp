@@ -1,36 +1,73 @@
 import { useNavigate } from 'react-router-dom'
-import PhoneFrame from '../../components/PhoneFrame'
-import { INSURERS } from '../../context/FlowContext'
+import { ChevronLeft, XMark, InsurerLogo } from '../../components/WildfireIcons'
+import { useFlow, INSURERS } from '../../context/FlowContext'
 
+// View Insurers — reached from the "No, I'm shopping" branch. Lists
+// FireSmart-compatible insurers with a per-insurer quote link. "Done" saves the
+// report and returns home via the saved-confirmation screen.
 export default function FireSmartInsurers() {
   const navigate = useNavigate()
+  const { setReportStatus } = useFlow()
+
+  function handleQuote(ins) {
+    if (ins.url) {
+      window.open(ins.url, '_blank', 'noopener,noreferrer')
+    } else {
+      alert(`This is a mockup — the ${ins.label} quote page is not connected.`)
+    }
+  }
+
+  function handleDone() {
+    // Shopping branch — the report is saved but not sent to anyone. Clear any
+    // prior "sent" state so the completion screen shows the saved variant.
+    setReportStatus({ saved: true, sent: false, sentToId: null })
+    navigate('/checklist/done')
+  }
 
   return (
-    <PhoneFrame title="FireSmart-friendly insurers" onBack={() => navigate('/checklist/share')}>
-      <p className="section-subtitle">
-        These insurers recognize wildfire mitigation work in fire-prone B.C.
-      </p>
-
-      {INSURERS.map((i) => (
-        <div key={i.id} className="list-row" style={{ cursor: 'default' }}>
-          <div className="list-row-main">
-            <span className="list-row-label">{i.label}</span>
-            <span className="list-row-sub">{i.firesmartNote}</span>
-          </div>
-          <button type="button" className="btn-outline" disabled title="Not available yet">
-            Get a quote ↗
+    <div className="wf-screen wf-flow">
+      <div className="wf-flow-top">
+        <div className="wf-flow-nav">
+          <button type="button" className="wf-iconbtn wf-flow-back" onClick={() => navigate('/checklist/share')} aria-label="Back">
+            <ChevronLeft size={20} />
+          </button>
+          <button type="button" className="wf-iconbtn wf-plan-close" onClick={() => navigate('/')} aria-label="Close">
+            <XMark size={20} />
           </button>
         </div>
-      ))}
+        <div className="wf-flow-heading">
+          <h1 className="wf-flow-title">FireSmart Compatible Insurers</h1>
+          <p className="wf-flow-subtitle">
+            Explore insurers that may consider verified wildfire mitigation when reviewing your
+            policy or providing a quote.
+          </p>
+        </div>
+      </div>
 
-      <button
-        type="button"
-        className="btn btn-primary"
-        style={{ width: '100%', flex: 'none', marginTop: 12 }}
-        onClick={() => navigate('/checklist/done')}
-      >
-        Save my record for later
-      </button>
-    </PhoneFrame>
+      <div className="wf-flow-content">
+        <div className="wf-insurer-list">
+          {INSURERS.map((ins) => (
+            <div key={ins.id} className="wf-insurer-card">
+              <span className="wf-insurer-logo">
+                <InsurerLogo id={ins.logo} />
+              </span>
+              <div className="wf-insurer-main">
+                <span className="wf-insurer-name">{ins.label}</span>
+                <span className="wf-insurer-note">{ins.firesmartNote}</span>
+              </div>
+              <button type="button" className="wf-toggle-btn" onClick={() => handleQuote(ins)}>
+                Get Quote
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="wf-flow-footer wf-flow-footer-single">
+        <button type="button" className="wf-nextbtn wf-nextbtn-full" onClick={handleDone}>
+          Done
+        </button>
+      </div>
+    </div>
   )
 }
