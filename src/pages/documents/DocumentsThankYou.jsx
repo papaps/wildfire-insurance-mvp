@@ -1,25 +1,28 @@
 import { useNavigate } from 'react-router-dom'
-import PhoneFrame from '../../components/PhoneFrame'
-import FooterNav from '../../components/FooterNav'
+import { Flower } from '../../components/WildfireIcons'
 
 export default function DocumentsThankYou() {
   const navigate = useNavigate()
 
   return (
-    <PhoneFrame onBack={() => navigate('/documents')}>
-      <div className="center-screen">
-        <div className="big-icon">{'✓'}</div>
-        <div className="section-title">Thanks!</div>
-        <p className="section-subtitle">
-          We've received your information. Now, upload or take photos of your property to
-          continue your wildfire risk assessment.
+    <div className="wf-screen wf-flow">
+      <div className="wf-thanks">
+        <Flower size={43} />
+        <h1 className="wf-flow-title wf-thanks-title">Your details have been saved.</h1>
+        <p className="wf-thanks-text">
+          Upload existing photos or take new ones to continue your wildfire risk assessment.
         </p>
       </div>
-      <FooterNav
-        onBack={() => navigate('/documents')}
-        nextLabel="Next"
-        onNext={() => navigate('/photos')}
-      />
-    </PhoneFrame>
+
+      <div className="wf-flow-footer wf-flow-footer-single">
+        <button
+          type="button"
+          className="wf-nextbtn wf-nextbtn-full"
+          onClick={() => navigate('/photos')}
+        >
+          Next
+        </button>
+      </div>
+    </div>
   )
 }

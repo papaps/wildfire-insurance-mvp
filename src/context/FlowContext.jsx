@@ -12,8 +12,7 @@ export const DOCUMENT_TYPES = [
   {
     id: 'firesmart',
     label: 'FireSmart BC',
-    question: 'Have you completed a FireSmart BC Home Ignition Zone Assessment?',
-    helpText: "Don't have the FireSmart BC assessment? Learn more here",
+    question: 'Has this home undergone a FireSmart BC Home Ignition Zone Assessment?',
   },
   {
     id: 'insurance',
@@ -24,8 +23,6 @@ export const DOCUMENT_TYPES = [
     id: 'pds',
     label: 'Property Disclosure Statement',
     question: 'Do you have a Property Disclosure Statement (PDS)?',
-    description:
-      'A Property Disclosure Statement (PDS) provides information about the condition and history of a property.',
   },
 ]
 
@@ -40,7 +37,7 @@ export const PHOTO_CATEGORIES = [
 ]
 
 const initialDocuments = Object.fromEntries(
-  DOCUMENT_TYPES.map((d) => [d.id, { answered: false, hasIt: null, uploaded: false }])
+  DOCUMENT_TYPES.map((d) => [d.id, { answered: false, hasIt: null, uploaded: false, fileName: null }])
 )
 
 const initialPhotos = Object.fromEntries(

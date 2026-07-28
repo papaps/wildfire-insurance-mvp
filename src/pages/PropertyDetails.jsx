@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import PhoneFrame from '../components/PhoneFrame'
-import FooterNav from '../components/FooterNav'
+import StepProgress from '../components/StepProgress'
+import WfRadio from '../components/WfRadio'
 import { useFlow } from '../context/FlowContext'
 import { supabase } from '../supabase'
 
@@ -71,140 +71,182 @@ export default function PropertyDetails() {
   }
 
   return (
-    <PhoneFrame step="Step 1 of 2" onBack={() => navigate('/')}>
-      <div className="section-title">Property Details</div>
-
-      <div className="field">
-        <label>Home Address</label>
-        <input
-          type="text"
-          value={propertyDetails.streetAddress}
-          onChange={(e) => update('streetAddress', e.target.value)}
-        />
+    <div className="wf-screen wf-flow">
+      <div className="wf-flow-top">
+        <StepProgress label="Step 1 of 2" value={0.5} />
       </div>
 
-      <div className="field">
-        <label>City</label>
-        <input
-          type="text"
-          value={propertyDetails.city}
-          onChange={(e) => update('city', e.target.value)}
-        />
-      </div>
+      <div className="wf-flow-content">
+        <h1 className="wf-flow-title">Property Details</h1>
 
-      <div className="field-row">
-        <div className="field">
-          <label>Province</label>
-          <input
-            type="text"
-            value={propertyDetails.province}
-            onChange={(e) => update('province', e.target.value)}
-          />
-        </div>
-        <div className="field">
-          <label>Postal Code</label>
-          <input
-            type="text"
-            value={propertyDetails.postalCode}
-            onChange={(e) => update('postalCode', e.target.value)}
-          />
-        </div>
-      </div>
-
-      <div className="field">
-        <label>Property Type</label>
-        <select
-          value={propertyDetails.propertyType}
-          onChange={(e) => update('propertyType', e.target.value)}
-        >
-          <option value="">Select</option>
-          <option value="house">House</option>
-          <option value="condo">Condo</option>
-          <option value="townhouse">Townhouse</option>
-        </select>
-      </div>
-
-      <div className="field-row">
-        <div className="field">
-          <label>Year Built</label>
-          <input
-            type="text"
-            inputMode="numeric"
-            value={propertyDetails.yearBuilt}
-            onChange={(e) => update('yearBuilt', e.target.value)}
-          />
-        </div>
-        <div className="field">
-          <label>Number of Stories</label>
-          <input
-            type="text"
-            inputMode="numeric"
-            value={propertyDetails.nStories}
-            onChange={(e) => update('nStories', e.target.value)}
-          />
-        </div>
-      </div>
-
-      <div className="field">
-        <label>Construction Type</label>
-        <select
-          value={propertyDetails.constructionType}
-          onChange={(e) => update('constructionType', e.target.value)}
-        >
-          <option value="">Select</option>
-          <option value="wood-frame">Wood Frame</option>
-          <option value="brick">Brick</option>
-          <option value="concrete">Concrete</option>
-          <option value="other">Other</option>
-        </select>
-      </div>
-
-      <div className="field">
-        <label>Roof Type</label>
-        <select
-          value={propertyDetails.roofType}
-          onChange={(e) => update('roofType', e.target.value)}
-        >
-          <option value="">Select</option>
-          <option value="asphalt-shingle">Asphalt Shingle</option>
-          <option value="metal">Metal</option>
-          <option value="tile">Tile</option>
-          <option value="wood-shake">Wood Shake</option>
-        </select>
-      </div>
-
-      <div className="field">
-        <label>Do you currently live here?</label>
-        <div className="radio-row">
-          <label className="radio-option">
+        <div className="wf-form">
+          <div className="wf-field">
+            <label htmlFor="pd-address">Home Address</label>
             <input
-              type="radio"
-              name="livesHere"
-              checked={propertyDetails.livesHere === 'yes'}
-              onChange={() => update('livesHere', 'yes')}
+              id="pd-address"
+              className="wf-input"
+              type="text"
+              placeholder="Address"
+              value={propertyDetails.streetAddress}
+              onChange={(e) => update('streetAddress', e.target.value)}
             />
-            Yes
-          </label>
-          <label className="radio-option">
+          </div>
+
+          <div className="wf-field">
+            <label htmlFor="pd-city">City</label>
             <input
-              type="radio"
-              name="livesHere"
-              checked={propertyDetails.livesHere === 'no'}
-              onChange={() => update('livesHere', 'no')}
+              id="pd-city"
+              className="wf-input"
+              type="text"
+              placeholder="City"
+              value={propertyDetails.city}
+              onChange={(e) => update('city', e.target.value)}
             />
-            No
-          </label>
+          </div>
+
+          <div className="wf-field-row">
+            <div className="wf-field">
+              <label htmlFor="pd-province">Province</label>
+              <input
+                id="pd-province"
+                className="wf-input"
+                type="text"
+                placeholder="Province"
+                value={propertyDetails.province}
+                onChange={(e) => update('province', e.target.value)}
+              />
+            </div>
+            <div className="wf-field">
+              <label htmlFor="pd-postal">Postal Code</label>
+              <input
+                id="pd-postal"
+                className="wf-input"
+                type="text"
+                placeholder="Postal"
+                value={propertyDetails.postalCode}
+                onChange={(e) => update('postalCode', e.target.value)}
+              />
+            </div>
+          </div>
+
+          <div className="wf-field">
+            <label htmlFor="pd-type">Property Type</label>
+            <div className="wf-select-wrap">
+              <select
+                id="pd-type"
+                className="wf-select"
+                data-empty={propertyDetails.propertyType === '' || undefined}
+                value={propertyDetails.propertyType}
+                onChange={(e) => update('propertyType', e.target.value)}
+              >
+                <option value="" disabled>Select Type</option>
+                <option value="house">House</option>
+                <option value="condo">Condo</option>
+                <option value="townhouse">Townhouse</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="wf-field-row">
+            <div className="wf-field">
+              <label htmlFor="pd-year">Year Built</label>
+              <input
+                id="pd-year"
+                className="wf-input"
+                type="text"
+                inputMode="numeric"
+                placeholder="YYYY"
+                value={propertyDetails.yearBuilt}
+                onChange={(e) => update('yearBuilt', e.target.value)}
+              />
+            </div>
+            <div className="wf-field">
+              <label htmlFor="pd-stories">Number of Stories</label>
+              <input
+                id="pd-stories"
+                className="wf-input"
+                type="text"
+                inputMode="numeric"
+                placeholder="1"
+                value={propertyDetails.nStories}
+                onChange={(e) => update('nStories', e.target.value)}
+              />
+            </div>
+          </div>
+
+          <div className="wf-field">
+            <label htmlFor="pd-construction">Construction Type</label>
+            <div className="wf-select-wrap">
+              <select
+                id="pd-construction"
+                className="wf-select"
+                data-empty={propertyDetails.constructionType === '' || undefined}
+                value={propertyDetails.constructionType}
+                onChange={(e) => update('constructionType', e.target.value)}
+              >
+                <option value="" disabled>Select Type</option>
+                <option value="wood-frame">Wood Frame</option>
+                <option value="brick">Brick</option>
+                <option value="concrete">Concrete</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="wf-field">
+            <label htmlFor="pd-roof">Roof Type</label>
+            <div className="wf-select-wrap">
+              <select
+                id="pd-roof"
+                className="wf-select"
+                data-empty={propertyDetails.roofType === '' || undefined}
+                value={propertyDetails.roofType}
+                onChange={(e) => update('roofType', e.target.value)}
+              >
+                <option value="" disabled>Select Type</option>
+                <option value="asphalt-shingle">Asphalt Shingle</option>
+                <option value="metal">Metal</option>
+                <option value="tile">Tile</option>
+                <option value="wood-shake">Wood Shake</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="wf-field">
+            <label>Do you currently live here?</label>
+            <div className="wf-radio-row">
+              <WfRadio
+                name="livesHere"
+                label="Yes"
+                checked={propertyDetails.livesHere === 'yes'}
+                onChange={() => update('livesHere', 'yes')}
+              />
+              <WfRadio
+                name="livesHere"
+                label="No"
+                checked={propertyDetails.livesHere === 'no'}
+                onChange={() => update('livesHere', 'no')}
+              />
+            </div>
+          </div>
+
+          {error && <p className="wf-flow-error">{error}</p>}
         </div>
       </div>
 
-      {error && <p className="field-error">{error}</p>}
-
-      <FooterNav
-        onBack={() => navigate('/')}
-        nextLabel={submitting ? 'Saving...' : 'Next'}
-        nextDisabled={submitting || !formComplete}
-        onNext={handleNext}
-      />
-    </PhoneFrame>
+      <div className="wf-flow-footer">
+        <button type="button" className="wf-textbtn" onClick={() => navigate('/')}>
+          Cancel
+        </button>
+        <button
+          type="button"
+          className="wf-nextbtn"
+          disabled={submitting || !formComplete}
+          onClick={handleNext}
+        >
+          {submitting ? 'Saving…' : 'Next'}
+        </button>
+      </div>
+    </div>
   )
 }
