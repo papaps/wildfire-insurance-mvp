@@ -1,60 +1,79 @@
 import { useNavigate } from 'react-router-dom'
-import PhoneFrame from '../../components/PhoneFrame'
-import { useFlow, CHECKLIST_ITEMS, HAZARD_RISK_SCORE } from '../../context/FlowContext'
+import { XMark, Fire, ExternalLink } from '../../components/WildfireIcons'
+import { HAZARD_RISK_SCORE, REPORT_RECOMMENDATIONS } from '../../context/FlowContext'
 
+// Wildfire Risk Report — shown right after the score finishes calculating.
+// Fixed header + sticky "Create Action Plan" footer, cards scroll between them.
 export default function HazardReport() {
   const navigate = useNavigate()
-  const { checklistProgress } = useFlow()
 
   return (
-    <PhoneFrame title="Your hazard report" onBack={() => navigate('/')}>
-      <div className="hazard-score-card">
-        <div className="hazard-score-value">
-          {HAZARD_RISK_SCORE} <span>/ 10</span>
+    <div className="wf-screen wf-flow">
+      <div className="wf-flow-top">
+        <div className="wf-plan-topbar">
+          <h1 className="wf-flow-title">Wildfire Risk Report</h1>
+          <button
+            type="button"
+            className="wf-iconbtn wf-plan-close"
+            onClick={() => navigate('/')}
+            aria-label="Close report"
+          >
+            <XMark size={20} />
+          </button>
         </div>
-        <div className="hazard-score-label">High wildfire risk</div>
-        <p className="hazard-score-note">
-          AI estimate — not 100% accurate. Verify with a free FireSmart home assessment.
-        </p>
       </div>
 
-      <div className="section-title" style={{ fontSize: 15 }}>Ranked fixes</div>
-
-      {CHECKLIST_ITEMS.map((item) => {
-        const done = checklistProgress[item.id]?.done
-        return (
-          <div key={item.id} className="todo-item">
-            <span className={`todo-checkbox${done ? ' todo-checkbox-done' : ''}`}>
-              {done ? '✓' : ''}
-            </span>
-            <div className="list-row-main">
-              <span
-                className="list-row-label"
-                style={done ? { textDecoration: 'line-through', color: 'var(--teal-muted-light)' } : undefined}
-              >
-                {item.label}
-              </span>
-              <span className="list-row-sub">{item.cost}</span>
-            </div>
+      <div className="wf-flow-content wf-plan-content">
+        <div className="wf-card wf-score-report">
+          <Fire size={24} />
+          <div className="wf-score-big">
+            <span className="wf-score-number">{HAZARD_RISK_SCORE}</span>
+            <span className="wf-score-outof">/10</span>
           </div>
-        )
-      })}
+          <div className="wf-score-level">High wildfire risk</div>
+          <p className="wf-score-note">
+            This score is an estimate. A free FireSmart home assessment provides a more accurate
+            evaluation.
+          </p>
+        </div>
 
-      <div className="help-link help-link-disabled" title="Not available yet">
-        FireSmart BC — book a free home assessment ↗
-      </div>
-      <div className="help-link help-link-disabled" title="Not available yet">
-        Check FireSmart rebate eligibility ↗
+        <div className="wf-card wf-reco-card">
+          <div className="wf-card-title">Recommended Actions</div>
+          <div className="wf-card-divider" />
+          <ol className="wf-reco-list">
+            {REPORT_RECOMMENDATIONS.map((rec, i) => (
+              <li key={rec.title} className="wf-reco-row">
+                <span className="wf-reco-num">{i + 1}</span>
+                <div className="wf-reco-body">
+                  <span className="wf-reco-title">{rec.title}</span>
+                  <span className="wf-reco-detail">{rec.detail}</span>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+
+        <div className="wf-card wf-resource-card">
+          <div className="wf-resource-row">
+            <span>FireSmart BC — Book a free home assessment</span>
+            <ExternalLink size={16} />
+          </div>
+          <div className="wf-resource-row">
+            <span>Check FireSmart rebate eligibility</span>
+            <ExternalLink size={16} />
+          </div>
+        </div>
       </div>
 
-      <button
-        type="button"
-        className="btn btn-primary"
-        style={{ width: '100%', flex: 'none' }}
-        onClick={() => navigate('/checklist/items')}
-      >
-        Start my checklist
-      </button>
-    </PhoneFrame>
+      <div className="wf-flow-footer wf-flow-footer-single">
+        <button
+          type="button"
+          className="wf-nextbtn wf-nextbtn-full"
+          onClick={() => navigate('/checklist/items')}
+        >
+          Create Action Plan
+        </button>
+      </div>
+    </div>
   )
 }

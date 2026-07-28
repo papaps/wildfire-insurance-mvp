@@ -1,108 +1,96 @@
-import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import PhoneFrame from '../../components/PhoneFrame'
+import { ChevronLeft, Upload, CameraOutline, XMark, FilePdf, Trash2 } from '../../components/WildfireIcons'
 import { useFlow, CHECKLIST_ITEMS } from '../../context/FlowContext'
+import grass from '../../assets/grass.png'
 
+// Action Item — attach evidence for a single checklist fix. Renders the empty
+// state (just the two upload actions) or the uploaded state (photo grid + file
+// rows). Evidence lives in FlowContext so it survives back-navigation, and the
+// upload actions are simulated (no real picker) per the flow spec.
 export default function MarkItemComplete() {
   const navigate = useNavigate()
   const { itemId } = useParams()
-  const { updateChecklistItem } = useFlow()
+  const { checklistProgress, addChecklistFiles, addChecklistPhoto, removeChecklistPhoto, removeChecklistFile } =
+    useFlow()
+
   const item = CHECKLIST_ITEMS.find((i) => i.id === itemId)
+  const evidence = checklistProgress[itemId]?.evidence ?? { photos: [], files: [] }
+  const hasEvidence = evidence.photos.length > 0 || evidence.files.length > 0
 
-  const [photo, setPhoto] = useState(null)
-  const [receipt, setReceipt] = useState(null)
-  const [markedDone, setMarkedDone] = useState(false)
-
-  function attachPhoto() {
-    setPhoto(`IMG_${Math.floor(Math.random() * 9999999)}.jpg`)
-  }
-
-  function attachReceipt() {
-    setReceipt(`IMG_${Math.floor(Math.random() * 9999999)}.jpg`)
-  }
-
-  function handleSubmit() {
-    if (markedDone) {
-      updateChecklistItem(itemId, { done: true })
-      navigate('/checklist/items')
-      return
-    }
-    updateChecklistItem(itemId, { photo: photo ?? null, receipt: receipt ?? null })
-    navigate(`/checklist/items/${itemId}/review`)
-  }
+  const back = () => navigate('/checklist/items')
 
   return (
-    <PhoneFrame title="Mark item complete" onBack={() => navigate('/checklist/items')}>
-      <div className="section-title">{item?.label ?? 'Checklist item'}</div>
-      <div className="section-subtitle">
-        {item ? `Estimated cost ${item.cost}` : ''}
+    <div className="wf-screen wf-flow">
+      <div className="wf-flow-top">
+        <button type="button" className="wf-iconbtn" onClick={back} aria-label="Back">
+          <ChevronLeft size={20} />
+        </button>
       </div>
 
-      {photo ? (
-        <div className="list-row">
-          <div className="list-row-main">
-            <span className="list-row-label">{photo}</span>
-            <span className="list-row-sub">Photo attached</span>
+      <div className="wf-flow-content wf-item-content">
+        <div className="wf-item-headwrap">
+          <div className="wf-item-heading">
+            <span className="wf-item-tag">{item?.cost ?? 'Free'}</span>
+            <h1 className="wf-item-title">{item?.label ?? 'Checklist item'}</h1>
           </div>
-          <button
-            type="button"
-            className="btn-outline"
-            onClick={() => setPhoto(null)}
-            aria-label="Remove photo"
-          >
-            ✕
+          <p className="wf-item-desc">{item?.description}</p>
+        </div>
+
+        {evidence.photos.length > 0 && (
+          <div className="wf-item-grid">
+            {evidence.photos.map((id) => (
+              <div key={id} className="wf-detail-thumb">
+                <img src={grass} alt="" />
+                <button
+                  type="button"
+                  className="wf-detail-remove"
+                  onClick={() => removeChecklistPhoto(itemId, id)}
+                  aria-label="Remove photo"
+                >
+                  <XMark size={20} />
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {evidence.files.map((name) => (
+          <div key={name} className="wf-file-row">
+            <FilePdf size={24} />
+            <span className="wf-file-name">{name}</span>
+            <button
+              type="button"
+              className="wf-file-delete"
+              onClick={() => removeChecklistFile(itemId, name)}
+              aria-label="Remove file"
+            >
+              <Trash2 size={20} />
+            </button>
+          </div>
+        ))}
+
+        <div className="wf-item-actions">
+          <button type="button" className="wf-item-action" onClick={() => addChecklistFiles(itemId)}>
+            <Upload size={20} />
+            Upload Files
+          </button>
+          <button type="button" className="wf-item-action" onClick={() => addChecklistPhoto(itemId)}>
+            <CameraOutline size={20} />
+            Take Photo
           </button>
         </div>
-      ) : (
-        <button type="button" className="upload-box" onClick={attachPhoto}>
-          <span>+ Add photo as proof</span>
-        </button>
-      )}
-
-      {receipt ? (
-        <div className="list-row">
-          <div className="list-row-main">
-            <span className="list-row-label">{receipt}</span>
-            <span className="list-row-sub">Receipt attached</span>
-          </div>
-          <button
-            type="button"
-            className="btn-outline"
-            onClick={() => setReceipt(null)}
-            aria-label="Remove receipt"
-          >
-            ✕
-          </button>
-        </div>
-      ) : (
-        <button type="button" className="upload-box" onClick={attachReceipt}>
-          <span>+ Attach receipt (optional)</span>
-        </button>
-      )}
-
-      <label className="radio-option" style={{ marginBottom: 16 }}>
-        <input
-          type="checkbox"
-          checked={markedDone}
-          onChange={(e) => setMarkedDone(e.target.checked)}
-        />
-        Mark as done in my checklist
-      </label>
-
-      <button
-        type="button"
-        className="btn btn-primary"
-        style={{ width: '100%', flex: 'none' }}
-        onClick={handleSubmit}
-        disabled={!markedDone && !photo}
-      >
-        {markedDone ? 'Mark as done' : 'Submit for AI review'}
-      </button>
-      <div className="section-subtitle" style={{ textAlign: 'center' }}>
-        {markedDone
-          ? "You're marking this done yourself — no AI review needed."
-          : 'AI checks your photo before this item is marked complete.'}
       </div>
-    </PhoneFrame>
+
+      <div className="wf-flow-footer wf-flow-footer-single">
+        <button
+          type="button"
+          className="wf-nextbtn wf-nextbtn-full"
+          disabled={!hasEvidence}
+          onClick={() => navigate(`/checklist/items/${itemId}/review`)}
+        >
+          Submit for AI Review
+        </button>
+      </div>
+    </div>
   )
 }

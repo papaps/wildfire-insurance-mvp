@@ -1311,3 +1311,582 @@
   line-height: 1.45;
   color: var(--wf-teal);
 }
+
+/* =====================================================================
+   Wildfire Risk Report + Action Plan checklist flow.
+   ===================================================================== */
+
+/* Header: page title left, close/back control right. */
+.wf-plan-topbar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.wf-plan-close {
+  color: #6b6b6b;
+  margin-top: 2px;
+}
+
+.wf-plan-content {
+  gap: 24px;
+}
+
+/* --- Generic card --- */
+.wf-card {
+  background: #fff;
+  border: 1px solid var(--wf-teal-15, rgba(0, 64, 64, 0.15));
+  border-radius: 10px;
+  padding: 14px 12px;
+}
+
+.wf-card-title {
+  font-family: var(--wf-serif);
+  font-size: 16px;
+  color: var(--wf-teal);
+}
+
+.wf-card-divider {
+  height: 1px;
+  background: rgba(0, 64, 64, 0.2);
+}
+
+/* --- Report score card --- */
+.wf-score-report {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.wf-score-big {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.wf-score-number {
+  font-family: var(--wf-serif);
+  font-size: 48px;
+  font-weight: 400;
+  line-height: 1;
+  color: var(--wf-orange);
+}
+
+.wf-score-number-md {
+  font-size: 36px;
+}
+
+.wf-score-outof {
+  font-family: var(--wf-sans);
+  font-size: 16px;
+  color: #6b6b6b;
+  padding-bottom: 6px;
+}
+
+.wf-score-level {
+  font-family: var(--wf-serif);
+  font-size: 16px;
+  color: var(--wf-teal);
+}
+
+.wf-score-note {
+  margin: 0;
+  max-width: 300px;
+  text-align: center;
+  font-family: var(--wf-sans);
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--wf-teal);
+  opacity: 0.6;
+}
+
+/* --- Recommended actions card --- */
+.wf-reco-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.wf-reco-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.wf-reco-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.wf-reco-num {
+  font-family: var(--wf-sans);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--wf-orange);
+}
+
+.wf-reco-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.wf-reco-title {
+  font-family: var(--wf-sans);
+  font-size: 14px;
+  line-height: 1.35;
+  color: var(--wf-teal);
+}
+
+.wf-reco-detail {
+  font-family: var(--wf-sans);
+  font-size: 11px;
+  line-height: 1.35;
+  color: var(--wf-teal);
+  opacity: 0.6;
+}
+
+/* --- Resource links card --- */
+.wf-resource-card {
+  background: linear-gradient(0deg, rgba(0, 64, 64, 0.04), rgba(0, 64, 64, 0.04)), #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.wf-resource-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--wf-sans);
+  font-size: 12px;
+  color: var(--wf-teal);
+  opacity: 0.6;
+}
+
+.wf-resource-row svg {
+  flex-shrink: 0;
+}
+
+/* --- Action Plan score card --- */
+.wf-plan-score {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  padding: 10px 12px;
+}
+
+.wf-plan-score-label {
+  font-family: var(--wf-serif);
+  font-size: 16px;
+  color: var(--wf-teal);
+}
+
+.wf-plan-score-value {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.wf-plan-progress {
+  margin-top: -4px;
+}
+
+/* --- Action Plan item rows --- */
+.wf-plan-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.wf-plan-divider {
+  height: 1px;
+  background: rgba(0, 64, 64, 0.2);
+}
+
+.wf-plan-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 0;
+  background: none;
+  border: none;
+  border-radius: 0;
+  text-align: left;
+  cursor: pointer;
+  font-family: var(--wf-sans);
+}
+
+.wf-plan-item:hover {
+  background: none;
+}
+
+.wf-plan-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.wf-plan-status > span {
+  display: inline-flex;
+}
+
+.wf-plan-ring {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1px solid var(--wf-teal);
+}
+
+.wf-plan-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.wf-plan-label {
+  font-size: 14px;
+  color: var(--wf-teal);
+}
+
+.wf-plan-sub {
+  font-size: 11px;
+  color: #6b6b6b;
+}
+
+.wf-plan-chevron {
+  display: inline-flex;
+  flex-shrink: 0;
+  color: var(--wf-teal-60);
+}
+
+/* --- Action Plan footer (stacked caption + button) --- */
+.wf-plan-footer {
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+}
+
+.wf-plan-remind {
+  margin: 0;
+  text-align: center;
+  font-family: var(--wf-sans);
+  font-size: 11px;
+  color: var(--wf-teal);
+  opacity: 0.6;
+}
+
+/* =====================================================================
+   Action Item detail (attach evidence).
+   ===================================================================== */
+
+.wf-item-content {
+  gap: 24px;
+}
+
+.wf-item-headwrap {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.wf-item-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.wf-item-tag {
+  font-family: var(--wf-sans);
+  font-size: 12px;
+  color: var(--wf-orange);
+}
+
+.wf-item-title {
+  margin: 0;
+  font-family: var(--wf-serif);
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 28px;
+  color: var(--wf-teal);
+}
+
+.wf-item-desc {
+  margin: 0;
+  font-family: var(--wf-sans);
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--wf-teal);
+  opacity: 0.6;
+}
+
+.wf-item-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.wf-item-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.wf-item-action {
+  flex: 1;
+  min-width: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid rgba(0, 64, 64, 0.15);
+  border-radius: 6px;
+  background: #fff;
+  color: var(--wf-teal);
+  font-family: var(--wf-sans);
+  font-size: 14px;
+  font-weight: 400;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.wf-item-action:hover {
+  background: #fff;
+}
+
+.wf-item-action svg {
+  flex-shrink: 0;
+}
+
+/* =====================================================================
+   Submit for AI — analysis screen.
+   ===================================================================== */
+
+.wf-item-analyze {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  padding: 24px 24px calc(env(safe-area-inset-bottom) + 24px);
+}
+
+.wf-analyze-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+}
+
+.wf-analyze-checks {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.wf-analyze-check {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--wf-sans);
+  font-size: 14px;
+  color: var(--wf-teal);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.wf-analyze-check svg {
+  flex-shrink: 0;
+}
+
+.wf-analyze-check.is-shown {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wf-analyze-check {
+    transition: opacity 0.2s ease;
+    transform: none;
+  }
+}
+
+/* =====================================================================
+   Action Item — completed + celebration.
+   ===================================================================== */
+
+.wf-item-complete {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  padding: 24px;
+}
+
+.wf-complete-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+}
+
+.wf-complete-sub {
+  margin: 0;
+  font-family: var(--wf-sans);
+  font-size: 14px;
+  color: var(--wf-teal);
+}
+
+.wf-complete-score {
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  padding: 10px 12px;
+}
+
+.wf-complete-score-values {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--wf-orange);
+}
+
+.wf-complete-score-num {
+  font-family: var(--wf-serif);
+  font-size: 32px;
+  font-weight: 400;
+  line-height: 1;
+  color: var(--wf-orange);
+}
+
+.wf-complete-remaining {
+  margin: 0;
+  text-align: center;
+  font-family: var(--wf-sans);
+  font-size: 11px;
+  color: #6b6b6b;
+  opacity: 0.6;
+}
+
+/* --- Freshly-completed check pop (Action Plan) --- */
+.wf-check-pop {
+  animation: wf-pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes wf-pop {
+  0% {
+    transform: scale(0.4);
+    opacity: 0.3;
+  }
+  60% {
+    transform: scale(1.15);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* --- Celebration: ballooning graphic + confetti burst --- */
+.wf-celebrate {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wf-celebrate-graphic {
+  display: inline-flex;
+  transform-origin: center;
+  animation: wf-balloon 0.72s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes wf-balloon {
+  0% {
+    transform: scale(0);
+  }
+  55% {
+    transform: scale(1.18);
+  }
+  72% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.wf-celebrate-pieces {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.wf-confetti {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(0.2);
+  opacity: 0;
+  animation: wf-confetti-burst 0.95s ease-out var(--delay) forwards;
+}
+
+@keyframes wf-confetti-burst {
+  0% {
+    transform: translate(-50%, -50%) scale(0.2);
+    opacity: 0;
+  }
+  18% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) rotate(var(--rot)) scale(1);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wf-celebrate-graphic {
+    animation: none;
+    transform: scale(1);
+  }
+  .wf-confetti {
+    display: none;
+  }
+  .wf-check-pop {
+    animation: none;
+  }
+}
+
+/* Neutralize the global coral button:hover for the flat controls above. */
+.wf-plan-close:hover {
+  background: none;
+}

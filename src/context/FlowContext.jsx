@@ -52,23 +52,111 @@ function makePreviews(categoryId, n) {
   return Array.from({ length: n }, () => `${categoryId}-${(previewSeq += 1)}`)
 }
 
-// Wildfire mitigation checklist shown in the post-report "hazard report" flow.
+// Wildfire mitigation checklist shown in the post-report "Action Plan" flow.
+// The base risk score before any recommendation is completed. Each completed
+// item shaves off its `scoreImpact`, so the live score is derived, never stored.
 export const HAZARD_RISK_SCORE = 8.6
 
+// The sample PDF that a simulated "Upload Files" produces on an action item.
+export const SAMPLE_EVIDENCE_PDF = 'FireSmart_BC_Home_Ignition_Zone_Assessment.pdf'
+
 export const CHECKLIST_ITEMS = [
-  { id: 'gutters', label: 'Clear leaves and debris from gutters', cost: '$0 · DIY' },
-  { id: 'firewood', label: 'Move firewood 10 m from the house', cost: '$0 · DIY' },
-  { id: 'branches', label: 'Trim branches over the roof', cost: '~$150–300' },
-  { id: 'mulch', label: 'Replace wood mulch with gravel', cost: '~$400' },
-  { id: 'roof', label: 'Upgrade to a Class A fire-rated roof', cost: '$8,000+ · rebate may apply' },
+  {
+    id: 'gutters',
+    label: 'Clear leaves and debris from gutters',
+    shortName: 'Gutters',
+    cost: 'Free',
+    scoreImpact: 0.4,
+    description:
+      'Remove leaves, pine needles, and other debris from all gutters and downspouts to reduce ember ignition risk.',
+    aiChecks: ['Gutter is clearly visible', 'No leaves or debris detected', 'Photo quality is sufficient'],
+  },
+  {
+    id: 'firewood',
+    label: 'Move firewood 10m from the house',
+    shortName: 'Firewood',
+    cost: 'Free',
+    scoreImpact: 0.4,
+    description:
+      'Relocate firewood, lumber, and other combustible stacks at least 10 m from the house to keep fuel away from the structure.',
+    aiChecks: ['Firewood is clearly visible', 'Stored 10 m or more from the house', 'Photo quality is sufficient'],
+  },
+  {
+    id: 'branches',
+    label: 'Trim branches over the roof',
+    shortName: 'Branches',
+    cost: '$0-300',
+    scoreImpact: 0.4,
+    description:
+      'Prune tree branches overhanging the roof and within 2 m of the chimney so flames and embers can’t bridge to the structure.',
+    aiChecks: ['Roofline is clearly visible', 'No overhanging branches detected', 'Photo quality is sufficient'],
+  },
+  {
+    id: 'mulch',
+    label: 'Replace wood mulch with gravel',
+    shortName: 'Mulch',
+    cost: '~$400',
+    scoreImpact: 0.6,
+    description:
+      'Swap bark or wood-chip mulch within 1.5 m of the home for gravel or another non-combustible ground cover.',
+    aiChecks: ['Ground cover is clearly visible', 'Non-combustible material detected', 'Photo quality is sufficient'],
+  },
+  {
+    id: 'fencing',
+    label: 'Replace wooden fencing near the home',
+    shortName: 'Fencing',
+    cost: '~$1,500–4,000',
+    scoreImpact: 0.6,
+    description:
+      'Replace wooden fences or gates that attach to the home with metal or other non-combustible materials to break the fuel path.',
+    aiChecks: ['Fencing is clearly visible', 'Non-combustible material detected', 'Photo quality is sufficient'],
+  },
+  {
+    id: 'roof',
+    label: 'Upgrade to Class A fire-rated roof',
+    shortName: 'Roof',
+    cost: '~$8K',
+    costNote: 'Rebate may apply',
+    scoreImpact: 0.8,
+    description:
+      'Upgrade to a Class A fire-rated roof to significantly improve your home’s resilience to wind-blown embers.',
+    aiChecks: ['Roof is clearly visible', 'Class A materials detected', 'Photo quality is sufficient'],
+  },
 ]
 
-const initialChecklistProgress = {
-  gutters: { done: true, photo: null, receipt: null },
-  firewood: { done: true, photo: null, receipt: null },
-  branches: { done: true, photo: null, receipt: null },
-  mulch: { done: false, photo: null, receipt: null },
-  roof: { done: false, photo: null, receipt: null },
+// Recommended actions shown on the Wildfire Risk Report (report-level guidance,
+// distinct from the actionable checklist above).
+export const REPORT_RECOMMENDATIONS = [
+  {
+    title: 'Book a free FireSmart assessment',
+    detail: 'Receive personalized recommendations tailored to your property.',
+  },
+  {
+    title: 'Remove combustible vegetation',
+    detail: 'Clear dry grass, leaves, and flammable plants within 1.5 m of your home’s exterior.',
+  },
+  {
+    title: 'Install ember-resistant vents',
+    detail: 'Upgrade vulnerable vents to reduce the chance of wind-blown embers entering your home.',
+  },
+  {
+    title: 'Replace your roof with fire-resistant materials',
+    detail: 'Consider upgrading to a Class A fire-rated roof to significantly improve wildfire resilience.',
+  },
+]
+
+// Initial Action Plan state — nothing completed, no evidence attached.
+const initialChecklistProgress = Object.fromEntries(
+  CHECKLIST_ITEMS.map((i) => [i.id, { done: false, evidence: null }])
+)
+
+// Live risk score: base minus the impact of every completed item, floored at 0.
+export function computeRiskScore(progress) {
+  const drop = CHECKLIST_ITEMS.reduce(
+    (sum, i) => sum + (progress[i.id]?.done ? i.scoreImpact : 0),
+    0
+  )
+  return Math.max(0, HAZARD_RISK_SCORE - drop)
 }
 
 export const INSURERS = [
@@ -123,6 +211,10 @@ export function FlowProvider({ children }) {
   ])
 
   const [checklistProgress, setChecklistProgress] = useState(initialChecklistProgress)
+  // Snapshot of the Action Plan's completed items as of the last time it was
+  // viewed — lets the plan animate the progress bar and newly-checked rows from
+  // their previous state instead of snapping to the final value.
+  const [planBaseline, setPlanBaseline] = useState({ doneIds: [] })
   const [reportInclusions, setReportInclusions] = useState({ photos: true, receipts: true })
   const [insurer, setInsurerState] = useState({ insurerId: 'pacific-coast', policyNumber: 'HO-4482-1937' })
   const [properties, setProperties] = useState([])
@@ -202,6 +294,56 @@ export function FlowProvider({ children }) {
     setChecklistProgress((prev) => ({ ...prev, [itemId]: { ...prev[itemId], ...patch } }))
   }
 
+  function emptyEvidence(prev, itemId) {
+    return prev[itemId]?.evidence ?? { photos: [], files: [] }
+  }
+
+  // Simulated "Upload Files" — treats the picker as successful and drops in the
+  // sample photo set + FireSmart PDF instead of requiring a real selection.
+  function addChecklistFiles(itemId) {
+    setChecklistProgress((prev) => {
+      const ev = emptyEvidence(prev, itemId)
+      const files = ev.files.includes(SAMPLE_EVIDENCE_PDF) ? ev.files : [...ev.files, SAMPLE_EVIDENCE_PDF]
+      const photos = ev.photos.length ? ev.photos : makePreviews(`${itemId}-ev`, 2)
+      return { ...prev, [itemId]: { ...prev[itemId], evidence: { photos, files } } }
+    })
+  }
+
+  // Simulated "Take Photo" — appends one more captured photo.
+  function addChecklistPhoto(itemId) {
+    setChecklistProgress((prev) => {
+      const ev = emptyEvidence(prev, itemId)
+      return {
+        ...prev,
+        [itemId]: { ...prev[itemId], evidence: { ...ev, photos: [...ev.photos, ...makePreviews(`${itemId}-ev`, 1)] } },
+      }
+    })
+  }
+
+  function removeChecklistPhoto(itemId, previewId) {
+    setChecklistProgress((prev) => {
+      const ev = emptyEvidence(prev, itemId)
+      return {
+        ...prev,
+        [itemId]: { ...prev[itemId], evidence: { ...ev, photos: ev.photos.filter((id) => id !== previewId) } },
+      }
+    })
+  }
+
+  function removeChecklistFile(itemId, name) {
+    setChecklistProgress((prev) => {
+      const ev = emptyEvidence(prev, itemId)
+      return {
+        ...prev,
+        [itemId]: { ...prev[itemId], evidence: { ...ev, files: ev.files.filter((f) => f !== name) } },
+      }
+    })
+  }
+
+  function commitPlanBaseline(doneIds) {
+    setPlanBaseline({ doneIds })
+  }
+
   function toggleReportInclusion(key) {
     setReportInclusions((prev) => ({ ...prev, [key]: !prev[key] }))
   }
@@ -241,6 +383,12 @@ export function FlowProvider({ children }) {
     addChatMessage,
     checklistProgress,
     updateChecklistItem,
+    addChecklistFiles,
+    addChecklistPhoto,
+    removeChecklistPhoto,
+    removeChecklistFile,
+    planBaseline,
+    commitPlanBaseline,
     reportInclusions,
     toggleReportInclusion,
     insurer,
