@@ -46,6 +46,9 @@ export default function ChecklistHub() {
             <XMark size={20} />
           </button>
         </div>
+        <p className="wf-flow-subtitle">
+          Complete these actions to help lower your wildfire risk score.
+        </p>
       </div>
 
       <div className="wf-flow-content wf-plan-content">

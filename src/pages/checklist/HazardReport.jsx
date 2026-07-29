@@ -38,7 +38,7 @@ export default function HazardReport() {
         </div>
 
         <div className="wf-card wf-reco-card">
-          <div className="wf-card-title">Recommended Actions</div>
+          <div className="wf-card-title">Actions Summary</div>
           <div className="wf-card-divider" />
           <ol className="wf-reco-list">
             {REPORT_RECOMMENDATIONS.map((rec, i) => (
