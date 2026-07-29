@@ -1,20 +1,30 @@
+import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ChevronLeft, XMark, InsurerLogo } from '../../components/WildfireIcons'
+import { ChevronLeft, XMark, InsurerLogo, Check } from '../../components/WildfireIcons'
 import { useFlow, INSURERS } from '../../context/FlowContext'
 
 // View Insurers — reached from the "No, I'm shopping" branch. Lists
-// FireSmart-compatible insurers with a per-insurer quote link. "Done" saves the
-// report and returns home via the saved-confirmation screen.
+// FireSmart-compatible insurers with a per-insurer "Get Quote" request that
+// resolves into an in-app "Sent" confirmation. "Done" saves the report and
+// returns home via the saved-confirmation screen.
 export default function FireSmartInsurers() {
   const navigate = useNavigate()
-  const { setReportStatus } = useFlow()
+  const { setReportStatus, quotedInsurers, markInsurerQuoted } = useFlow()
+  // Which insurer's quote is mid-flight — drives the transient loading state and
+  // blocks repeated taps. Persisted "Sent" state lives in FlowContext.
+  const [sendingId, setSendingId] = useState(null)
+  const timerRef = useRef(null)
+
+  useEffect(() => () => clearTimeout(timerRef.current), [])
 
   function handleQuote(ins) {
-    if (ins.url) {
-      window.open(ins.url, '_blank', 'noopener,noreferrer')
-    } else {
-      alert(`This is a mockup — the ${ins.label} quote page is not connected.`)
-    }
+    // Ignore taps while a request is in flight or already sent for this card.
+    if (sendingId || quotedInsurers[ins.id]) return
+    setSendingId(ins.id)
+    timerRef.current = setTimeout(() => {
+      markInsurerQuoted(ins.id)
+      setSendingId(null)
+    }, 900)
   }
 
   function handleDone() {
@@ -46,20 +56,36 @@ export default function FireSmartInsurers() {
 
       <div className="wf-flow-content">
         <div className="wf-insurer-list">
-          {INSURERS.map((ins) => (
-            <div key={ins.id} className="wf-insurer-card">
-              <span className="wf-insurer-logo">
-                <InsurerLogo id={ins.logo} name={ins.label} />
-              </span>
-              <div className="wf-insurer-main">
-                <span className="wf-insurer-name">{ins.label}</span>
-                <span className="wf-insurer-note">{ins.firesmartNote}</span>
+          {INSURERS.map((ins) => {
+            const sent = quotedInsurers[ins.id]
+            const sending = sendingId === ins.id
+            return (
+              <div key={ins.id} className="wf-insurer-card">
+                <span className="wf-insurer-logo">
+                  <InsurerLogo id={ins.logo} name={ins.label} />
+                </span>
+                <div className="wf-insurer-main">
+                  <span className="wf-insurer-name">{ins.label}</span>
+                  <span className="wf-insurer-note">{ins.firesmartNote}</span>
+                </div>
+                {sent ? (
+                  <span className="wf-insurer-sent">
+                    Sent
+                    <Check size={16} />
+                  </span>
+                ) : (
+                  <button
+                    type="button"
+                    className={`wf-toggle-btn${sending ? ' is-loading' : ''}`}
+                    onClick={() => handleQuote(ins)}
+                    disabled={sending}
+                  >
+                    {sending ? 'Sending…' : 'Get Quote'}
+                  </button>
+                )}
               </div>
-              <button type="button" className="wf-toggle-btn" onClick={() => handleQuote(ins)}>
-                Get Quote
-              </button>
-            </div>
-          ))}
+            )
+          })}
         </div>
       </div>
 

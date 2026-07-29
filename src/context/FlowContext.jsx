@@ -243,6 +243,9 @@ export function FlowProvider({ children }) {
   // Lifecycle of the generated insurance report. `saved` flips as soon as the
   // report screen is reached (auto-save); `sent` + `sentToId` capture a share.
   const [reportStatus, setReportStatusState] = useState({ saved: false, sent: false, sentToId: null })
+  // Per-insurer "Get Quote" requests fired from the View Insurers screen. Kept
+  // here so the "Sent" confirmation survives back/close navigation.
+  const [quotedInsurers, setQuotedInsurers] = useState({})
   const [properties, setProperties] = useState([])
 
   useEffect(() => {
@@ -382,6 +385,10 @@ export function FlowProvider({ children }) {
     setReportStatusState((prev) => ({ ...prev, ...patch }))
   }
 
+  function markInsurerQuoted(insurerId) {
+    setQuotedInsurers((prev) => ({ ...prev, [insurerId]: true }))
+  }
+
   function addProperty(row) {
     setProperties((prev) => [submissionToProperty(row), ...prev])
   }
@@ -425,6 +432,8 @@ export function FlowProvider({ children }) {
     setInsurer,
     reportStatus,
     setReportStatus,
+    quotedInsurers,
+    markInsurerQuoted,
     properties,
     addProperty,
     removeProperty,

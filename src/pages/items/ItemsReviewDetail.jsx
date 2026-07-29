@@ -66,6 +66,7 @@ export default function ItemsReviewDetail() {
                       onBlur={() => commitEdit(item.id)}
                       onKeyDown={(e) => {
                         if (e.key === 'Enter') commitEdit(item.id)
+                        else if (e.key === 'Escape') setEditingId(null)
                       }}
                     />
                   ) : (

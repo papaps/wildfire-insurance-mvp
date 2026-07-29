@@ -1180,6 +1180,10 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
+  /* Grid items default to min-width: auto, which lets the label input's
+     intrinsic width blow out the 1fr track. Pin to 0 so editing never
+     widens the card or column. */
+  min-width: 0;
 }
 
 .wf-detail-thumb {
@@ -1224,9 +1228,19 @@
   align-items: center;
   justify-content: space-between;
   gap: 8px;
+  min-width: 0;
 }
 
 .wf-detail-label {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  /* Transparent border + matching padding keep the label the exact same
+     box height as the edit input, so switching modes never resizes the row. */
+  padding: 2px 6px;
+  border: 1px solid transparent;
   font-family: var(--wf-sans);
   font-size: 14px;
   color: var(--wf-teal);
@@ -1249,9 +1263,10 @@
 }
 
 .wf-flow input.wf-detail-input {
-  flex: 1;
+  flex: 1 1 auto;
   min-width: 0;
-  padding: 4px 8px;
+  width: 100%;
+  padding: 2px 6px;
   border: 1px solid rgba(0, 64, 64, 0.15);
   border-radius: 6px;
   font-family: var(--wf-sans);
@@ -1274,7 +1289,8 @@
   width: 100%;
   padding: 16px 24px;
   background: none;
-  border: 1px solid var(--wf-teal-60);
+  /* Dashed treatment shared with the Home "Add a property" button. */
+  border: 1px dashed var(--wf-teal-60);
   border-radius: 10px;
   color: var(--wf-teal-60);
   font-family: var(--wf-sans);
@@ -1285,6 +1301,11 @@
 
 .wf-detail-addmore:hover {
   background: var(--wf-teal-06);
+}
+
+.wf-detail-addmore:disabled {
+  opacity: 0.5;
+  cursor: default;
 }
 
 /* --- Thanks screen --- */
@@ -1561,6 +1582,8 @@
 
 .wf-plan-label {
   font-size: 14px;
+  /* One level lighter than the inherited 500 button weight. */
+  font-weight: 400;
   color: var(--wf-teal);
 }
 
@@ -1968,11 +1991,6 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
-  transition: opacity 0.15s ease;
-}
-
-.wf-report-row.is-excluded .wf-report-main {
-  opacity: 0.4;
 }
 
 .wf-report-label {
@@ -2028,6 +2046,30 @@
   border-color: transparent;
 }
 
+/* Get Quote → transient pressed/loading state while the request "sends". */
+.wf-toggle-btn.is-loading,
+.wf-toggle-btn:disabled {
+  background: var(--wf-teal-06);
+  color: var(--wf-teal-60);
+  cursor: default;
+}
+
+/* Get Quote → final "Sent ✓" status. Plain text + check, no button
+   affordance. Padding matches the button so the row layout never shifts. */
+.wf-insurer-sent {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 12px;
+  font-family: var(--wf-sans);
+  font-size: 12px;
+  font-weight: 500;
+  /* 60% opacity teal for both the label and the check (currentColor). */
+  color: var(--wf-teal-60);
+  line-height: 1;
+}
+
 /* --- Insurance Report footer (caption + CTA + text link) --- */
 .wf-report-footer {
   flex-direction: column;
@@ -2080,6 +2122,8 @@
 .wf-choice-label {
   font-family: var(--wf-sans);
   font-size: 14px;
+  /* One level lighter than the inherited 500 button weight. */
+  font-weight: 400;
   color: var(--wf-teal);
 }
 
@@ -2120,6 +2164,8 @@
   align-items: center;
   gap: 12px;
   width: 100%;
+  /* Uniform height so single- and two-line notes share the same card size. */
+  min-height: 78px;
   padding: 14px 12px;
   background: #fff;
   border: 1px solid var(--wf-teal-15, rgba(0, 64, 64, 0.15));
