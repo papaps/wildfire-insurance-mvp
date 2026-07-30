@@ -1,0 +1,32 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title="Foundations/Typography" />
+
+# Typography
+
+Two typefaces, loaded as system/web-safe fallback stacks (no font files are
+bundled — swap in the real webfonts when available):
+
+- **Serif** (`--wf-serif`): `'Source Serif 4', Georgia, 'Times New Roman', serif` — page titles, welcome headers, scores
+- **Sans** (`--wf-sans`): `'Space Grotesk', system-ui, -apple-system, sans-serif` — body copy, labels, buttons
+
+export const styles = [
+  { label: 'Welcome header', className: 'wf-welcome', sample: 'Welcome back, Sam' },
+  { label: 'Flow title', className: 'wf-flow-title', sample: 'Property details' },
+  { label: 'Card title', className: 'wf-card-title', sample: 'Wildfire Risk Report' },
+  { label: 'Score number', className: 'wf-score-number', sample: '82' },
+  { label: 'Body / bubble text', className: 'wf-bubble wf-bubble-assistant', sample: 'Your report is ready to review.' },
+  { label: 'Field label', className: 'wf-field', sample: 'ADDRESS' },
+]
+
+<div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+  {styles.map((s) => (
+    <div key={s.label} style={{ display: 'flex', alignItems: 'baseline', gap: 24, borderBottom: '1px solid rgba(0,64,64,0.1)', paddingBottom: 16 }}>
+      <div style={{ width: 160, flexShrink: 0, fontFamily: 'var(--wf-sans)', fontSize: 12, color: '#6b6b6b' }}>
+        {s.label}
+        <div style={{ fontFamily: 'monospace', fontSize: 10, marginTop: 2 }}>.{s.className.split(' ')[0]}</div>
+      </div>
+      <div className={s.className}>{s.sample}</div>
+    </div>
+  ))}
+</div>

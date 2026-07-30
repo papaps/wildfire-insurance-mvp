@@ -1,0 +1,22 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title="Foundations/Introduction" />
+
+# Wildfire Design System
+
+This is the design system behind the wildfire-insurance-mvp app — the `wf-` prefixed
+components, CSS classes, and tokens defined in
+[`src/styles/wildfire.css`](https://github.com/papaps/wildfire-insurance-mvp/blob/demo/src/styles/wildfire.css)
+and used across the Home, Chat, Profile, property checklist, and insurance-report flows.
+
+- **Foundations** — color and typography tokens
+- **Components** — reusable React components (`WfRadio`, `TabBar`, `StepProgress`, `WildfireLoader`, `Celebration`, icon sets)
+- **Patterns** — styled building blocks that exist as CSS classes in the app today (buttons, cards, form fields, chat bubbles) rather than standalone components
+
+The app's screens are designed for a ~440px-wide phone viewport — use the
+**Wildfire mobile (440px)** viewport option in the toolbar above to preview
+components at their real size.
+
+> The app also contains an older `phone-` prefixed layout used by three legacy
+> screens (Login, SignUp, ReviewFailed). It's being phased out in favor of the
+> `wf-` system and isn't documented here.
