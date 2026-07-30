@@ -26,7 +26,7 @@ export default function TabBar({ active = 'home' }) {
             onClick={() => navigate(tab.to)}
           >
             {tab.key === 'home' && <Home size={24} filled={isActive} />}
-            {tab.key === 'chat' && <MessageSquare size={24} />}
+            {tab.key === 'chat' && <MessageSquare size={24} filled={isActive} />}
             {tab.key === 'profile' && <UserRound size={24} filled={isActive} />}
           </button>
         )

@@ -1,5 +1,3 @@
-import React from 'react'
-import { MemoryRouter } from 'react-router-dom'
 import '../src/index.css'
 import '../src/styles/wildfire.css'
 
@@ -33,13 +31,6 @@ const preview = {
       },
     },
   },
-  decorators: [
-    (Story) => (
-      <MemoryRouter>
-        <Story />
-      </MemoryRouter>
-    ),
-  ],
 }
 
 export default preview
