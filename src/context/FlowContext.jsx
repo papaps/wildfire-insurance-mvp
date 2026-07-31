@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useCallback, useContext, useEffect, useState } from 'react'
 import { supabase } from '../supabase'
 import { useAuth } from './AuthContext'
 
@@ -209,20 +209,26 @@ function submissionToProperty(row) {
   return { id: row.id, address: address || 'Untitled property' }
 }
 
+const initialPropertyDetails = {
+  streetAddress: '',
+  city: '',
+  province: '',
+  postalCode: '',
+  propertyType: '',
+  yearBuilt: '',
+  nStories: '',
+  constructionType: '',
+  roofType: '',
+  livesHere: 'yes',
+}
+
 export function FlowProvider({ children }) {
   const { user } = useAuth()
-  const [propertyDetails, setPropertyDetails] = useState({
-    streetAddress: '',
-    city: '',
-    province: '',
-    postalCode: '',
-    propertyType: '',
-    yearBuilt: '',
-    nStories: '',
-    constructionType: '',
-    roofType: '',
-    livesHere: 'yes',
-  })
+  const [propertyDetails, setPropertyDetails] = useState(initialPropertyDetails)
+
+  const resetPropertyDetails = useCallback(() => {
+    setPropertyDetails(initialPropertyDetails)
+  }, [])
 
   const [documents, setDocuments] = useState(initialDocuments)
   const [photos, setPhotos] = useState(initialPhotos)
@@ -407,6 +413,7 @@ export function FlowProvider({ children }) {
   const value = {
     propertyDetails,
     setPropertyDetails,
+    resetPropertyDetails,
     documents,
     updateDocument,
     photos,

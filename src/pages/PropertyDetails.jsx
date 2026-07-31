@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import StepProgress from '../components/StepProgress'
 import WfRadio from '../components/WfRadio'
@@ -19,9 +19,11 @@ const REQUIRED_FIELDS = [
 
 export default function PropertyDetails() {
   const navigate = useNavigate()
-  const { propertyDetails, setPropertyDetails, addProperty } = useFlow()
+  const { propertyDetails, setPropertyDetails, resetPropertyDetails, addProperty } = useFlow()
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
+
+  useEffect(() => resetPropertyDetails, [resetPropertyDetails])
 
   function update(field, value) {
     setPropertyDetails((prev) => ({ ...prev, [field]: value }))
